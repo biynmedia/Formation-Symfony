@@ -3,18 +3,19 @@
 namespace App\Controller\TechNews;
 
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IndexController
+class IndexController extends Controller
 {
     /**
      * Page d'accueil de notre site
      * Configuration de notre route grâce dans routes.yaml
-     * @return Response
      */
     public function index() {
-        return new Response("<html><body><h1>PAGE D'ACCUEIL</h1></body></html>");
+        # return new Response("<html><body><h1>PAGE D'ACCUEIL</h1></body></html>");
+        return $this->render('base.html.twig');
     }
 
     /**
