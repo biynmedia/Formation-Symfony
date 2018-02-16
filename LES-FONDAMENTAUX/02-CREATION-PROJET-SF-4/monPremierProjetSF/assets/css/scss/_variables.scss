@@ -1,0 +1,91 @@
+//
+// Variables
+// --------------------------------------------------
+
+//== Colors
+//== Gray Levels
+$gray:                  #95a5a6;
+
+$gray-dark:             #7f8c8d;
+$gray-darker:           #34495e;
+$gray-darkest:          #2c3e50;
+
+$gray-light:            #bdc3c7;
+$gray-lighter:          #ecf0f1;
+$gray-lightest:         #f3f5f5;
+
+
+
+$black:                 #000;
+$white:                 #fff;
+$blue:                  #2b85c1;
+$blue-dark:             darken($blue,15%);
+$green:                 #27ae60;
+$cyan:                  #3498db;
+$red:                   #c0392b;
+$yellow:                #f1c40f;
+$orange:                #f39c12;
+$pink:                  #d60a6c;
+$purple:                #8e44ad;
+
+// Other Brand colors
+// -------------------------
+$brand-facebook:        #3b5998;
+$brand-twitter:         #3a92c8;
+$brand-google:          #dd4b39;
+$brand-dribbble:        #c32361;
+$brand-youtube:         #b00;
+$brand-pinterest:       #cb2027;
+$brand-rss:             #f26522;
+
+
+$base-color:#333;
+$text-color: #333;
+$active-color: #E53526;
+$hover-color:lighten($active-color,10%);
+$border-color: #eeeeee;
+$border-radius:2px;
+
+
+
+
+//== Padding
+$padding-section:60px;
+$padding-section-mobile:30px;
+
+
+//== Typography
+$font-size-h1: 36px;
+$font-size-h2: 30px;
+$font-size-h3: 24px;
+$font-size-h4: 18px;
+$font-size-h5: 15px;
+$font-size-h6: 12px;
+
+$font-size-base: 14px;
+$font-size-heading: 17px;
+
+// NNTH: Font Weight Variants
+// --------------------------------
+$font-weight-light:     300;
+$font-weight-base:      400;
+$font-weight-bold:      700;
+
+
+// Typography
+// -------------------------
+
+$font-family:'Open Sans', sans-serif;
+$font-family-base:     $font-family;
+$font-family-menu: 'Oswald', sans-serif;
+
+$font-family-heading:'Roboto Slab', serif;
+
+$headings-margin-bottom:10px;
+$section-margin-bottom:20px;
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 {
     "devDependencies": {
-        "@symfony/webpack-encore": "^0.17.0"
+        "@symfony/webpack-encore": "^0.17.1"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -9,5 +9,11 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production"
+    },
+    "dependencies": {
+        "extract-text-webpack-plugin": "^3.0.2",
+        "jquery": "^3.3.1",
+        "node-sass": "^4.7.2",
+        "sass-loader": "^6.0.6"
     }
 }

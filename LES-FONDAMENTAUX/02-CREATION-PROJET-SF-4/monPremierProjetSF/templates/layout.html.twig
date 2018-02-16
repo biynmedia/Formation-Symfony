@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('images/apple-touch-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('images/apple-touch-icon-114x114.png') }}">
+    <!-- Online Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700&subset=latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700" rel="stylesheet">
+    <!-- Vendor -->
+    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/normalize.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('build/app.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/owl.carousel.min.css') }}" rel="stylesheet" />
+
+    <!-- JavaScripts -->
+    <!--<script src="js/modernizr.js"></script>-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+{% endblock %}
+
+{% block body %}
+
+    <!--preload-->
+    <div class="loader" id="page-loader">
+        <div class="loading-wrapper">
+        </div>
+    </div>
+
+    {# Menu du Site #}
+    {% include 'components/_nav_menu.html.twig' %}
+
+    {# Contenu du Site #}
+    {% block content '' %}
+
+    {# Pied de Page #}
+    {% include "components/_footer.html.twig" %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <!--script file-->
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    {#<script src="{{ asset('build/app.js') }}"></script>#}
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+    <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}

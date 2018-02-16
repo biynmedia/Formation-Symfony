@@ -15,7 +15,7 @@ class IndexController extends Controller
      */
     public function index() {
         # return new Response("<html><body><h1>PAGE D'ACCUEIL</h1></body></html>");
-        return $this->render('base.html.twig');
+        return $this->render('index/index.html.twig');
     }
 
     /**
