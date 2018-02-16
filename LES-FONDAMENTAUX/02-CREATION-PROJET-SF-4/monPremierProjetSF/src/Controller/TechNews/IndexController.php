@@ -3,6 +3,7 @@
 namespace App\Controller\TechNews;
 
 
+use App\Service\Article\ArticleProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,14 +13,23 @@ class IndexController extends Controller
     /**
      * Page d'accueil de notre site
      * Configuration de notre route grâce dans routes.yaml
+     * @param ArticleProvider $articleProvider
+     * @return Response
      */
-    public function index() {
-        return $this->render('index/index.html.twig');
+    public function index(ArticleProvider $articleProvider) {
+
+        # Récupération des Articles depuis ArticleProvider
+        $articles = $articleProvider->getArticles();
+
+        # Transmission à la vue
+        return $this->render('index/index.html.twig', [
+            'articles' => $articles
+        ]);
     }
 
     /**
      * Page permettant d'afficher les articles d'une catégorie
-     * @Route("/{libellecategorie}",
+     * @Route("/categorie/{libellecategorie}",
      *     name="index_categorie",
      *     methods={"GET"},
      *     requirements={"libellecategorie"="\w+"})

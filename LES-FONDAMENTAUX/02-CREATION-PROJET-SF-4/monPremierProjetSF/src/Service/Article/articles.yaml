@@ -1,0 +1,102 @@
+data:
+  article1 :
+    idarticle : 1
+    titrearticle : 'Tip Aligning Digital Marketing with Business Goals and Objectives'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '3.jpg'
+    specialarticle : false
+    spotlightarticle : true
+    datecreationarticle : 2017-02-26 09:37:18
+    categorie :
+      idcategorie : 2
+      libellecategorie : 'Business'
+    auteur :
+      idauteur : 1
+      prenomauteur : 'Hugo'
+      nomauteur : 'LIEGEARD'
+      emailauteur : 'wf3@hl-media.fr'
+
+  article2 :
+    idarticle : 2
+    titrearticle : 'Six big ways MacOS Sierra is going to change your Apple experience'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '4.jpg'
+    specialarticle : false
+    spotlightarticle : false
+    datecreationarticle : 2017-02-26 11:19:18
+    categorie :
+      idcategorie : 3
+      libellecategorie : 'Computing'
+    auteur :
+      idauteur : 2
+      prenomauteur : 'Sylvianne'
+      nomauteur : 'PEREZ'
+      emailauteur : 'sylviane.perez@wf3.fr'
+
+  article3 :
+    idarticle : 3
+    titrearticle : 'Will Anker be the company to finally put a heads-up display in my car'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '5.jpg'
+    specialarticle : false
+    spotlightarticle : true
+    datecreationarticle : 2017-02-26 11:19:18
+    categorie :
+      idcategorie : 2
+      libellecategorie : 'Business'
+    auteur :
+      idauteur : 1
+      prenomauteur : 'Hugo'
+      nomauteur : 'LIEGEARD'
+      emailauteur : 'wf3@hl-media.fr'
+
+  article4 :
+    idarticle : 4
+    titrearticle : 'Windows 10 Now Running on 400 Million Active Devices, Says Microsoft'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '1.jpg'
+    specialarticle : false
+    spotlightarticle : false
+    datecreationarticle : 2017-02-26 11:19:18
+    categorie :
+      idcategorie : 2
+      libellecategorie : 'Business'
+    auteur :
+      idauteur : 1
+      prenomauteur : 'Hugo'
+      nomauteur : 'LIEGEARD'
+      emailauteur : 'wf3@hl-media.fr'
+
+  article5 :
+    idarticle : 5
+    titrearticle : '400 million machines are now running Windows 10'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '7.jpg'
+    specialarticle : false
+    spotlightarticle : false
+    datecreationarticle : 2017-02-26 11:19:18
+    categorie :
+      idcategorie : 3
+      libellecategorie : 'Computing'
+    auteur :
+      idauteur : 2
+      prenomauteur : 'Sylvianne'
+      nomauteur : 'PEREZ'
+      emailauteur : 'sylviane.perez@wf3.fr'
+
+  article6 :
+    idarticle : 6
+    titrearticle : '7 essential lessons from agency marketing to startup growth'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '6.jpg'
+    specialarticle : false
+    spotlightarticle : true
+    datecreationarticle : 2017-02-26 11:19:18
+    categorie :
+      idcategorie : 2
+      libellecategorie : 'Business'
+    auteur :
+      idauteur : 1
+      prenomauteur : 'Hugo'
+      nomauteur : 'LIEGEARD'
+      emailauteur : 'wf3@hl-media.fr'
