@@ -19,7 +19,7 @@ class IndexController extends Controller
 
     /**
      * Page permettant d'afficher les articles d'une catégorie
-     * @Route("/categorie/{libellecategorie}",
+     * @Route("/{libellecategorie}",
      *     name="index_categorie",
      *     methods={"GET"},
      *     requirements={"libellecategorie"="\w+"})

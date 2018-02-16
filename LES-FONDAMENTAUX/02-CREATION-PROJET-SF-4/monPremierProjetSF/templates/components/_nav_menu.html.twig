@@ -8,13 +8,13 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">Business</a>
+                <a href="{{ url('index_categorie', { libellecategorie : 'business' }) }}">Business</a>
             </li>
             <li>
-                <a href="javascript:void(0)">Computing</a>
+                <a href="{{ url('index_categorie', { libellecategorie : 'computing' }) }}">Computing</a>
             </li>
             <li>
-                <a href="javascript:void(0)">Tech </a>
+                <a href="{{ url('index_categorie', { libellecategorie : 'tech' }) }}">Tech </a>
             </li>
         </ul>
     </div>
@@ -25,7 +25,7 @@
         <header class="header">
             <div class="row">
                 <div class="col-md-3 col-sm-4 col-xs-12">
-                    <a href="#" class="logo">
+                    <a href="{{ url('index') }}" class="logo">
                         <img alt="Logo" src="{{ asset('images/logo.png') }}" />
                     </a>
                 </div>
@@ -44,13 +44,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)">Business</a>
+                    <a href="{{ url('index_categorie', { libellecategorie : 'business' }) }}">Business</a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)">Computing</a>
+                    <a href="{{ url('index_categorie', { libellecategorie : 'computing' }) }}">Computing</a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)">Tech </a>
+                    <a href="{{ url('index_categorie', { libellecategorie : 'tech' }) }}">Tech </a>
                 </li>
             </ul>
             <div class="search-icon">

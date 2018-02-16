@@ -22,12 +22,18 @@
                 <article class="news-cate-item">
                     <div class="row">
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <a href="#">
+                            <a href="{{ url('index_article', {
+                                libellecategorie : 'computing',
+                                slugarticle      : 'slug-de-mon-article',
+                                idarticle        : 1 }) }}">
                                 <img alt="" src="{{ asset('images/product/2.jpg')}}">
                             </a>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12">
-                            <h3><a href="#">Tip Aligning Digital Marketing with Business Goals and Objectives</a></h3>
+                            <h3><a href="{{ url('index_article', {
+                                    libellecategorie : 'computing',
+                                    slugarticle      : 'slug-de-mon-article',
+                                    idarticle        : 1 }) }}">Tip Aligning Digital Marketing with Business Goals and Objectives</a></h3>
                             <div class="meta-post">
                                 <a href="#">
                                     Hugo LIEGEARD
