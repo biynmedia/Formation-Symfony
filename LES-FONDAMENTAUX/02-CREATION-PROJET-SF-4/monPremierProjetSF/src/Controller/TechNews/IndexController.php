@@ -3,6 +3,7 @@
 namespace App\Controller\TechNews;
 
 
+use App\Entity\Article;
 use App\Service\Article\ArticleProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,9 +46,41 @@ class IndexController extends Controller
      * @see https://symfony.com/doc/current/routing.html#adding-wildcard-requirements
      * @Route("/{libellecategorie}/{slugarticle}_{idarticle}.html", name="index_article",
      *     requirements={"idarticle"="\d+"} )
+     * @param $libellecategorie
+     * @param $slugarticle
+     * @param $idarticle
+     * @return Response
      */
     public function article($libellecategorie, $slugarticle, $idarticle) {
-        # index.php/business/une-formation-symfony-a-paris_98426852.html
-        return $this->render('index/article.html.twig');
+        # index.php/business/une-formation-symfony-a-paris_2.html
+
+        $article = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->find($idarticle);
+
+        # Si aucun article n'est trouvé...
+        if (!$article) {
+            # On génère une exception
+            # throw $this->createNotFoundException(
+            #     'Nous n\'avons pas trouvé votre article ID : '.$idarticle
+            # );
+            # Ou on peut aussi rediriger l'utilisateur sur la page index.
+            return $this->redirectToRoute('index',[],Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        /**
+         * Lazy Loading et le Chargement des Related Objects
+         * Il est important de comprendre que nous avons accès à l'objet catégorie du produit,
+         * de façon AUTOMATIQUE ! Cependant, les données de la catégorie ne sont récupéré
+         * par doctrine que lorsque nous en faisant la demande, et pas avant ! Ceci pour alléger
+         * le chargement de votre page.
+         */
+        # $categorie = $article->getCategorie()->getLibelle();
+
+        return $this->render('index/article.html.twig', [
+            'article' => $article,
+            #   'categorie' => $categorie
+        ]);
     }
+
 }
