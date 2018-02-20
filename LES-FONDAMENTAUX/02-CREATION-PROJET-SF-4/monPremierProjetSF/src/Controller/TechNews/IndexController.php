@@ -44,19 +44,19 @@ class IndexController extends Controller
     /**
      * Page permettant d'afficher un article
      * @see https://symfony.com/doc/current/routing.html#adding-wildcard-requirements
-     * @Route("/{libellecategorie}/{slugarticle}_{idarticle}.html", name="index_article",
+     * @Route("/{libellecategorie}/{slugarticle}_{id}.html", name="index_article",
      *     requirements={"idarticle"="\d+"} )
-     * @param $libellecategorie
-     * @param $slugarticle
-     * @param $idarticle
+     * @param Article $article
      * @return Response
      */
-    public function article($libellecategorie, $slugarticle, $idarticle) {
+    public function article(Article $article) {
+        # https://symfony.com/doc/current/doctrine.html#automatically-fetching-objects-paramconverter
         # index.php/business/une-formation-symfony-a-paris_2.html
 
-        $article = $this->getDoctrine()
-            ->getRepository(Article::class)
-            ->find($idarticle);
+        # Récupération avec Doctrine
+        # $article = $this->getDoctrine()
+        #     ->getRepository(Article::class)
+        #     ->find($idarticle);
 
         # Si aucun article n'est trouvé...
         if (!$article) {
