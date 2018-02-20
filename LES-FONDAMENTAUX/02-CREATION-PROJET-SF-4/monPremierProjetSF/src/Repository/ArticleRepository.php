@@ -13,16 +13,26 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    /*
-    public function findBySomething($value)
+    public function findLastFiveArticle()
     {
         return $this->createQueryBuilder('a')
-            ->where('a.something = :value')->setParameter('value', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
+
+    public function findArticleSuggestions($idarticle, $idcategorie)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.categorie = :categorie_id')->setParameter('categorie_id', $idcategorie)
+            ->andWhere('a.id != :article_id')->setParameter('article_id', $idarticle)
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

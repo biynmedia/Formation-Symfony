@@ -68,6 +68,11 @@ class IndexController extends Controller
             return $this->redirectToRoute('index',[],Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        # Récupération des suggestions
+        $suggestions = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findArticleSuggestions($article->getId(),$article->getCategorie()->getId());
+
         /**
          * Lazy Loading et le Chargement des Related Objects
          * Il est important de comprendre que nous avons accès à l'objet catégorie du produit,
@@ -79,6 +84,7 @@ class IndexController extends Controller
 
         return $this->render('index/article.html.twig', [
             'article' => $article,
+            'suggestions' => $suggestions,
             #   'categorie' => $categorie
         ]);
     }
