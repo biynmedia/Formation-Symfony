@@ -1,0 +1,102 @@
+{% extends "layout.html.twig" %}
+{% set active = 'addarticle' %}
+{% block page_title %}
+    Ajouter un Article
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <form class="form-horizontal" method="POST"
+                  enctype="multipart/form-data">
+                <h3>Ajouter un Article</h3>
+
+                {# Titre de l'Article #}
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Titre de l'Article</label>
+                    <div class="col-md-8">
+                        {{ form_row(form.titre) }}
+                    </div>
+                </div>
+
+                {# Catégorie de l'Article #}
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Catégorie</label>
+                    <div class="col-md-8">
+                        {{ form_row(form.categorie) }}
+                    </div>
+                </div>
+
+                {# Contenu de l'Article #}
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Description</label>
+                    <div class="col-md-8">
+                        {{ form_row(form.contenu) }}
+                    </div>
+                </div>
+
+                {# Featured Image (File) #}
+                <div class="form-group">
+                    <label class="col-md-2 control-label">
+                        Featured Image <em>(Image à la Une)</em>
+                    </label>
+                    <div class="col-md-8">
+                        {{ form_row(form.featuredimage) }}
+                    </div>
+                </div>
+
+                {# Options (SPECIAL et SPOTLIGHT) #}
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Options</label>
+                    <div class="col-md-8">
+                        <div class="checkbox">
+                            <label>
+                                {{ form_row(form.special) }}
+                                Spécial
+                            </label>
+                            <label>
+                                {{ form_row(form.spotlight) }}
+                                Spotlight
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {# Submit #}
+                <div class="form-group">
+                    <div class="col-xs-7 col-xs-offset-3">
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" integrity="sha256-AWdeVMUYtwLH09F6ZHxNgvJI37p+te8hJuSMo44NVm0=" crossorigin="anonymous" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="//cdn.ckeditor.com/4.8.0/full/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha256-SUaao5Q7ifr2twwET0iyXVy0OVnuFJhGVi5E/dqEiLU=" crossorigin="anonymous"></script>
+    <script>
+        CKEDITOR.replace('form_contenu')
+        $('.dropify').dropify({
+            messages: {
+                default: 'Glissez-d&eacute;posez un fichier ici ou cliquez',
+                replace: 'Glissez-d&eacute;posez un fichier ou cliquez pour remplacer',
+                remove:  'Supprimer',
+                error:   'D&eacute;sol&eacute;, le fichier est trop volumineux'
+            }
+        });
+    </script>
+{% endblock %}
