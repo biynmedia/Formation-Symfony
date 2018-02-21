@@ -1,3 +1,5 @@
+{#{{ dump(articles) }}#}
+
 <!--colright-->
 <div class="col-md-4 col-sm-12">
     <!--tab popular-->
@@ -11,81 +13,29 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="tab1">
             <ul class="list-news-popular">
-                <li>
-                    <a href="javascript:void(0)">
-                        <img alt="" src="{{ asset('images/product/8.jpg') }}">
-                    </a>
-                    <h3><a href="javascript:void(0)">Netflix Speeds Jumped 51% This Year</a></h3>
-                    <div class="meta-post">
-                        <a href="javascript:void(0)">
-                            Ashley Ford
+                {% for article in articles %}
+                    <li>
+                        <a href="{{ url('index_article', {
+                            libellecategorie : article.categorie.libelle | slugify,
+                            slugarticle      : article.titre | slugify,
+                            id        : article.id }) }}">
+                            <img alt="{{ article.titre }}" src="{{ asset('images/product/' ~ article.featuredimage) }}">
                         </a>
-                        <em></em>
-                        <span>
-							24 Aug  2016
-						</span>
-                    </div>
-                </li>
-                <li>
-                    <a href="javascript:void(0)">
-                        <img alt="" src="{{ asset('images/product/9.jpg') }}">
-                    </a>
-                    <h3><a href="javascript:void(0)">Uber wants to build planes to beat city traffic</a></h3>
-                    <div class="meta-post">
-                        <a href="javascript:void(0)">
-                            Karla	Walters
-                        </a>
-                        <em></em>
-                        <span>
-							04 Sep  2016
-						</span>
-                    </div>
-                </li>
-                <li>
-                    <a href="javascript:void(0)">
-                        <img alt="" src="{{ asset('images/product/10.jpg') }}">
-                    </a>
-                    <h3><a href="javascript:void(0)">Apple reportedly prototyping their Amazon Echo competitor</a></h3>
-                    <div class="meta-post">
-                        <a href="javascript:void(0)">
-                            Super User
-                        </a>
-                        <em></em>
-                        <span>
-							01 Sep  2016
-						</span>
-                    </div>
-                </li>
-                <li>
-                    <a href="javascript:void(0)">
-                        <img alt="" src="{{ asset('images/product/11.jpg') }}">
-                    </a>
-                    <h3><a href="javascript:void(0)">Watch out: That USB stick in your mailbox might be infected</a></h3>
-                    <div class="meta-post">
-                        <a href="javascript:void(0)">
-                            Sue	Benson
-                        </a>
-                        <em></em>
-                        <span>
-							27 Aug  2016
-						</span>
-                    </div>
-                </li>
-                <li>
-                    <a href="javascript:void(0)">
-                        <img alt="" src="{{ asset('images/product/13.jpg') }}">
-                    </a>
-                    <h3><a href="javascript:void(0)">Tumblr brings Apple’s ‘Live Photos’ to the web</a></h3>
-                    <div class="meta-post">
-                        <a href="javascript:void(0)">
-                            Super User
-                        </a>
-                        <em></em>
-                        <span>
-							15 Sep 2016
-						</span>
-                    </div>
-                </li>
+                        <h3><a href="{{ url('index_article', {
+                                libellecategorie : article.categorie.libelle | slugify,
+                                slugarticle      : article.titre | slugify,
+                                id        : article.id }) }}">{{ article.titre }}</a></h3>
+                        <div class="meta-post">
+                            <a href="javascript:void(0)">
+                                {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
+                            </a>
+                            <em></em>
+                            <span>
+                                {{ article.datecreation | date('d/m/Y') }}
+                            </span>
+                        </div>
+                    </li>
+                {% endfor %}
             </ul>
 
         </div>
@@ -147,22 +97,29 @@
 			</span>
         </div>
         <div class="list-special">
-            <article class="news-two-large">
-                <a href="javascript:void(0)">
-                    <img alt="" src="{{ asset('images/product/4.jpg') }}">
-                </a>
-                <h3><a href="javascript:void(0)">Six big ways MacOS Sierra is going to change your Apple experience</a></h3>
-                <div class="meta-post">
-                    <a href="javascript:void(0)">
-                        Sue	Benson
+            {% for article in special %}
+                <article class="news-two-large">
+                    <a href="{{ url('index_article', {
+                        libellecategorie : article.categorie.libelle | slugify,
+                        slugarticle      : article.titre | slugify,
+                        id        : article.id }) }}">
+                        <img alt="{{ article.titre }}" src="{{ asset('images/product/' ~ article.featuredimage) }}">
                     </a>
-                    <em></em>
-                    <span>
-						23 Sep 2016
-					</span>
-                </div>
-
-            </article>
+                    <h3><a href="{{ url('index_article', {
+                            libellecategorie : article.categorie.libelle | slugify,
+                            slugarticle      : article.titre | slugify,
+                            id        : article.id }) }}">{{ article.titre }}</a></h3>
+                    <div class="meta-post">
+                        <a href="javascript:void(0)">
+                            {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
+                        </a>
+                        <em></em>
+                        <span>
+                            {{ article.datecreation | date('d/m/Y') }}
+                        </span>
+                    </div>
+                </article>
+            {% endfor %}
         </div>
     </div>
 </div>

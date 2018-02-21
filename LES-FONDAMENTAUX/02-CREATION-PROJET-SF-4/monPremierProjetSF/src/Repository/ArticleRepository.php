@@ -35,4 +35,20 @@ class ArticleRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findSpotlightArticles() {
+        return $this->createQueryBuilder('a')
+            ->where('a.spotlight = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findSpecialArticles() {
+        return $this->createQueryBuilder('a')
+            ->where('a.special = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

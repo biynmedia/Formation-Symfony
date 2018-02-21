@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05-LES PROVIDERS DANS SF4</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="les-providers--symfony-4">Les Providers | Symfony 4</h1>
+<p>Avant d’attaquer directement notre BDD, nous allons dans un premier temps travailler avec des providers.</p>
+<blockquote>
+<p>Doc de référence :<br>
+<a href="https://symfony.com/doc/current/components/yaml.html">https://symfony.com/doc/current/components/yaml.html</a></p>
+</blockquote>
+<p>Nous allons dans un premier temps mettre nos données <em>(articles et categories)</em> dans un fichier YAML.</p>
+<h2 id="création-du-fichier-yaml">Création du fichier YAML</h2>
+<p>Installons tout d’abord le composant symfony qui nous permettra de manipuler via PHP nos données YAML.</p>
+<pre><code>composer require symfony/yaml
+</code></pre>
+<p>Puis dans <strong>src/Service/Article</strong> créons le fichier <strong>articles.yaml</strong><br>
+Nous allons mettre en place nos articles selon le modèle suivant :</p>
+<pre><code>data:
+  article1 :
+    id : 1
+    titre : 'Tip Aligning Digital Marketing with Business Goals and Objectives'
+    contenu    : '&lt;p&gt;CONTENU&lt;/p&gt;'
+    featuredimage : '3.jpg'
+    special : false
+    spotlight : true
+    datecreation : 2017-02-26 09:37:18	
+	categorie:
+      id : 2
+      libelle : 'Business'
+    auteur:
+      id : 1
+      prenom : 'Hugo'
+      nom : 'LIEGEARD'
+      email : 'wf3@hl-media.fr'
+   article2 : ...
+   article3 : ...
+</code></pre>
+<p><em>Créez quelques articles pour la démonstration.</em></p>
+<h2 id="création-du-service">Création du Service</h2>
+<p>Mettons ensuite en place le <strong>service symfony</strong> :</p>
+<ul>
+<li>
+<p>Création du Service :  <strong>ArticleProvider</strong> : <em>Créez le classe ArticleProvider dans src/Article/ArticleProvider.php</em></p>
+</li>
+<li>
+<p>Création de la fonction <strong>getArticles()</strong></p>
+</li>
+</ul>
+<p>Depuis SF4, nos services sont chargé et disponible automatiquement.<br>
+Testons dans la console :</p>
+<pre><code> php bin/console debug:autowiring
+</code></pre>
+<p>Nous voyons que notre <strong>ArticleProvider</strong> est déjà prêt à être utilisé par symfony !</p>
+<h2 id="utilisation-du-service">Utilisation du Service</h2>
+<blockquote>
+<p>Nous allons maintenant récupérer les articles dans notre contrôleur puis afficher les données sur notre page d’accueil.</p>
+</blockquote>
+<p>La récupération du service est simple et rapide, on injecte le service dans le paramètre de notre fonction, symfony fera le reste :</p>
+<pre><code>public function index(ArticleProvider $articleProvider)
+</code></pre>
+<p>Il ne nous reste plus qu’à récupérer les articles et les transmettre à la vue :</p>
+<pre><code>$articles = $articleProvider-&gt;getArticles();
+return $this-&gt;render('index/index.html.twig', [
+    'articles' =&gt; $articles
+]);
+</code></pre>
+<p><em>NOTA BENE : En déclarant notre service dans services.yaml il est possible d’y accéder via le container de symfony.</em></p>
+<h2 id="affichage-dans-le-template">Affichage dans le template</h2>
+<p>Nous pouvons ensuite accéder à nos données directement dans twig.</p>
+<pre><code>{{ dump(articles) }}
+</code></pre>
+<blockquote>
+<p>Il ne reste plus qu’à faire les boucles et le tour est joué !</p>
+</blockquote>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+</div>
+</body>
+
+</html>

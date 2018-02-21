@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07-TWIG</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="twig">Twig</h1>
+<p><strong>Dans ce chapitre, nous allons voir comment  :</strong></p>
+<ul>
+<li>Accéder à un service depuis twig</li>
+<li>Créer nos propres extensions (filtres) twig.</li>
+<li>Générer le rendu d’un contrôleur depuis le template</li>
+<li>Afficher un Fil d’Ariane dans notre menu</li>
+</ul>
+<h2 id="finalisation-du-layout">Finalisation du Layout</h2>
+<p>Pour la finalisation de notre thème, nous allons :</p>
+<ol>
+<li>Afficher les catégories de notre site dans le menu</li>
+<li>Générer le contenu de notre sidebar via la fonction render()</li>
+</ol>
+<h3 id="accéder-à-un-service-depuis-twig">Accéder à un service depuis Twig</h3>
+<p>Il nous est tout à fait possible d’accéder à un de nos services directement depuis notre template twig.</p>
+<p>Nous allons tout d’abord déclarer notre service dans twig :</p>
+<p><strong>config/packages/twig.yaml :</strong></p>
+<pre><code>twig:
+   ...
+    globals:
+      categorie_service: '@App\Repository\CategorieRepository'
+</code></pre>
+<p>Nous pouvons maintenant accéder à notre service depuis notre thème :<br>
+<strong>Créons une variable categories :</strong> dans <strong>layout.html.twig</strong> de cette façon la variable sera accessible dans toutes les vues.</p>
+<pre><code>{% set categories = categorie_service.findAll() %}
+{{ dump(categories) }}
+</code></pre>
+<p>Vous devriez voir toutes les catégories du site s’afficher !<br>
+Une boucle et le tour est joué !</p>
+<blockquote>
+<p>Mettons à jour notre menu et notre pied de page.</p>
+</blockquote>
+<h3 id="créer-un-filtre-twig">Créer un filtre twig</h3>
+<p>Pour la génération de nos urls, nous aurons besoin d’un slug. Nous aurons également besoin de générer une accroche de 170 caractères pour nos articles.</p>
+<p>Pour cela nous allons mettre en place une extension twig !</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/templating/twig_extension.html">https://symfony.com/doc/current/templating/twig_extension.html</a></p>
+</blockquote>
+<p>Dans notre console :</p>
+<pre><code>composer require twig/extensions
+</code></pre>
+<p>Créons ensuite notre classe AppExtension qui hérite de la classe AbstractExtension dans <strong>Service/Twig/AppExtension.php</strong></p>
+<blockquote>
+<p>Atelier : Création de AppExtention.php</p>
+</blockquote>
+<p>Grâce à l’autowiring de SF4, notre extension est automatiquement chargé !</p>
+<p>Nous pouvons maintenant finaliser la générations des URLs dans toutes les pages. <em>(Index, Categorie, Article, Nav et Footer)</em></p>
+<h3 id="générer-le-rendu-dun-contrôleur-depuis-le-template">Générer le rendu d’un contrôleur depuis le template</h3>
+<p>Nous allons attaquer la dernière partie de notre site, la sidebar.</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/templating/embedding_controllers.html">https://symfony.com/doc/current/templating/embedding_controllers.html</a></p>
+</blockquote>
+<p>Dans certains cas, nous avons besoin d’inclure plus qu’un simple template dans notre vue. Par exemple, dans le cas de notre sidebar, nous avons besoin de récupérer les 5 derniers articles de la base, mais aussi les articles en position “special”.</p>
+<p>Vous comprenez vite qu’il ne sera pas possible de faire notre requête directement depuis notre template…</p>
+<p>La solution est alors la suivante, nous allons inclure dans notre template, le résultat du rendu d’un contrôleur.</p>
+<p>Dans <strong>IndexController</strong>, créons une fonction <strong>sidebar()</strong> :</p>
+<pre><code>public function sidebar() {
+
+        # Récupération du Répository
+        $repository = $this-&gt;getDoctrine()-&gt;getRepository(Article::class);
+
+        # Récupération des 5 derniers articles
+        $articles   = $repository-&gt;findLastFiveArticle();
+
+        # Récupération des articles à la position "special"
+        $special    = $repository-&gt;findSpecialArticles();
+
+        return $this-&gt;render('components/_sidebar.html.twig', [
+            'articles'  =&gt; $articles,
+            'special'   =&gt; $special
+        ]);
+
+    }
+</code></pre>
+<p>Depuis notre <strong>_sidebar.html.twig</strong> nous pouvons récupérer les variables :</p>
+<pre><code>{{ dump(articles) }}
+{{ dump(special) }}
+</code></pre>
+<p><em>Nous pouvons maintenant faire nos boucles…</em></p>
+<p>Pour afficher ensuite notre sidebar, dans nos vues :</p>
+<pre><code>{{ render(controller('App\\Controller\\TechNews\\IndexController::sidebar')) }}
+</code></pre>
+<p>Comprenez ici que symfony va executer la fonction <strong>sidebar()</strong> de notre <strong>IndexController</strong>. Nous auront alors le rendu de <strong>_sidebar.html.twig</strong> via <strong>sidebar()</strong> dans notre vue !</p>
+<h3 id="affichage-du-current">Affichage du current</h3>
+<p>Il est souvent pratique sur un site internet d’afficher à l’utilisateur un Fil d’Ariane. C’est à dire lui indiquer ou il se trouve sur notre site.</p>
+<p>Notre thème dispose d’une classe <strong>“current”</strong> à appliquer sur la balise <strong>“li”</strong> pour indiquer à l’utilisateur sur quelle page il se trouve.</p>
+<p>Pour mettre en place cela, nous allons simplement vérifier si la page sur laquelle l’utilisateur se trouve correspond à l’une des catégories du menu.</p>
+<pre><code>{% for categorie in categories %}
+     &lt;li {% if(active == categorie.libelle) %}class="current"{%endif%}&gt;...&lt;/li&gt;
+ {% endfor %}
+</code></pre>
+<p>Nous allons ensuite créer une variable <strong>“active”</strong> via twig dans notre page catégorie <strong>(categorie.html.twig)</strong> :</p>
+<pre><code>{% set active = app.request.get('libellecategorie') | capitalize %}
+</code></pre>
+<p>De cette façon lorsque PHP parcours les catégories, s’il trouve une correspondance il ajoutera la classe current sur le “li” correspondant.</p>
+<p>Pour la page d’accueil, nous mettrons manuellement la déclaration :</p>
+<pre><code>&lt;li {% if(active == 'index') %}class="current"{%endif%}&gt;&lt;/li&gt;
+</code></pre>
+<p>Dans la vue :</p>
+<pre><code>{% set active = 'index' %}
+</code></pre>
+<p>Nous pourrons faire pareil par la suite pour les autres pages…</p>
+<pre><code>{% set active = '...' %}
+</code></pre>
+<p>Vous devriez avoir maintenant un site internet entièrement fonctionnelle côté front !</p>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+</div>
+</body>
+
+</html>

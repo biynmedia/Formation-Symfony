@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03-LE ROUTAGE DANS SF4</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="le-routage--symfony-4">Le Routage | Symfony 4</h1>
+<blockquote>
+<p>Doc de référence : <a href="https://symfony.com/doc/current/routing.html">https://symfony.com/doc/current/routing.html</a></p>
+</blockquote>
+<p>Suite à installation nous n’avons pour le moment aucune route de défini dans notre application. A nous de faire le nécessaire.<br>
+En réalité, symfony nous offres plusieurs possibilité selon nos préférences pour gérer les routes <em>(URL)</em> de notre application :</p>
+<blockquote>
+<p>Annotations, YAML, PHP, XML</p>
+</blockquote>
+<h2 id="le-yaml">Le YAML</h2>
+<p>YAML, est un langage simple qui décrit les données. Il permet de représenter des données structurées, comme le ferait XML par exemple, mais de manière plus naturelle et moins verbeuse. C’est à dire de manière aisément modifiable et  compréhensibles par un humain, quel que soit le langage de programmation".</p>
+<p>La plupart des fichiers de configuration dans symfony sont au format YAML.</p>
+<p>Rendez-vous sur :</p>
+<blockquote>
+<p>config / routes.yaml</p>
+</blockquote>
+<p>Nous allons retirer les commentaires et créer notre premier contrôleur.</p>
+<pre><code>index:
+    path: /
+    defaults: { _controller: 'App\Controller\DefaultController::index' }
+</code></pre>
+<p><em>Explication du fonctionnement des routes en YAML</em></p>
+<h2 id="création-de-indexcontroller">Création de IndexController</h2>
+<blockquote>
+<p>Doc de référence : <a href="https://symfony.com/doc/current/controller.html">https://symfony.com/doc/current/controller.html</a></p>
+</blockquote>
+<ol>
+<li>Créer le dossier TechNews dans src/Controller.</li>
+<li>Créer une nouvelle classe 'IndexController</li>
+</ol>
+<p><strong>Nous allons écrire ensemble notre première action :</strong></p>
+<pre><code>public function index() {
+       return new Response("&lt;html&gt;&lt;body&gt;&lt;h1&gt;PAGE D'ACCUEIL&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
+}
+</code></pre>
+<p>Actualisons maintenant notre page pour voir le résultat.<br>
+Testons maintenant dans notre console les commandes suivantes :</p>
+<blockquote>
+<p>php bin/console debug:router --env=prod<br>
+php bin/console debug:router</p>
+</blockquote>
+<ul>
+<li>Que pouvez-nous constater ?</li>
+<li>D’où proviennent les routes complémentaires ? A quoi servent-elles ?</li>
+</ul>
+<h2 id="les-annotations">Les Annotations</h2>
+<p>Dans symfony, pour plus de facilité, nous pouvons écrire nos routes avec des annotations.</p>
+<blockquote>
+<p>Doc de référence : <a href="https://symfony.com/doc/current/routing.html#creating-routes">https://symfony.com/doc/current/routing.html#creating-routes</a></p>
+</blockquote>
+<p>Dans la console :</p>
+<blockquote>
+<p>composer require annotations</p>
+</blockquote>
+<p>Nous pouvons maintenant écrire notre première route grâce aux annotations.</p>
+<blockquote>
+<p>Mise en place des routes</p>
+</blockquote>
+<pre><code>/**
+  * Page permettant d'afficher les articles d'une catégorie
+  * @Route("/categorie/{libellecategorie}", name="index_categorie", methods={"GET"})
+  * @param $libellecategorie
+  * @return Response
+  */
+    public function categorie($libellecategorie = 'computing') {
+        return new Response("&lt;html&gt;&lt;body&gt;&lt;h1&gt;PAGE CATEGORIE : $libellecategorie&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
+    }
+</code></pre>
+<p>Nous pouvons ensuite tester dans notre console, la détection de nos routes par Symfony :</p>
+<pre><code>php bin/console router:match /categorie/business
+</code></pre>
+<h3 id="en-plus---les-contrôleurs-notable">En plus :  Les contrôleurs notable</h3>
+<p>Testons les deux contrôleurs suivants :</p>
+<h4 id="redirectcontroller">RedirectController</h4>
+<blockquote>
+<p>Doc de référence : <a href="https://symfony.com/doc/current/routing/redirect_in_config.html#redirecting-using-a-route">https://symfony.com/doc/current/routing/redirect_in_config.html#redirecting-using-a-route</a></p>
+</blockquote>
+<p>Ajoutons dans notre fichier routes.yaml le code suivant :</p>
+<pre><code>accueil:
+    path: /accueil
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: index
+        permanent: true
+</code></pre>
+<p>Grâce à <strong>redirectAction</strong> du <strong>RedirectController</strong>, je peux créer une redirection sans avoir dû créer un contrôleur personnalisé…</p>
+<h4 id="templatecontroller">TemplateController</h4>
+<blockquote>
+<p>Doc de référence : <a href="https://symfony.com/doc/current/templating/render_without_controller.html">https://symfony.com/doc/current/templating/render_without_controller.html</a></p>
+</blockquote>
+<p>Il se peut que dans certains cas, nous ayons besoin d’afficher une simple page, sans pour autant passer de paramètre. Nous pouvons alors grâce au TemplateController éviter la création d’un contrôleur dédié.</p>
+<pre><code>mentions_legales:
+    path:         /mentions-legales
+    controller:   Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    defaults:
+        template: static/mentionslegales.html.twig
+</code></pre>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+</div>
+</body>
+
+</html>

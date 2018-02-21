@@ -15,10 +15,9 @@
             <div class="col-md-3 col-md-offset-1 col-sm-4 col-xs-12">
                 <h3>NOS CATEGORIES</h3>
                 <ul class="list-category">
-                    <li><a href="javascript:void(0)">Catégorie 1</a></li>
-                    <li><a href="javascript:void(0)">Catégorie 2</a></li>
-                    <li><a href="javascript:void(0)">Catégorie 3</a></li>
-                    <li><a href="javascript:void(0)">Catégorie 4</a></li>
+                    {% for categorie in categories %}
+                        <li><a href="{{ url('index_categorie', { 'libellecategorie' : categorie.libelle | slugify }) }}">{{ categorie.libelle }}</a></li>
+                    {% endfor %}
                 </ul>
             </div>
             <div class="col-md-3 col-md-offset-1 col-sm-4 col-xs-12">

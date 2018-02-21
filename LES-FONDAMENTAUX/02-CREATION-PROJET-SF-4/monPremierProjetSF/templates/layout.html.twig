@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% set categories = categorie_service.findAll() %}
+
 {% block stylesheets %}
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">

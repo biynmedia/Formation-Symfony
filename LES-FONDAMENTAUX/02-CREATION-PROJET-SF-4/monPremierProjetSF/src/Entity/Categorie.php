@@ -38,6 +38,8 @@ class Categorie
         $this->articles = new ArrayCollection();
     }
 
+    // ---------------------- Getters & Setters
+
     /**
      * @return mixed
      */
@@ -71,7 +73,7 @@ class Categorie
     }
 
     /**
-     * @return Collection|Article[]
+     * @return Collection|Article
      */
     public function getArticles()
     {
@@ -86,7 +88,6 @@ class Categorie
         $this->articles = $articles;
     }
 
-    // ---------------------- Getters & Setters
 
 
 

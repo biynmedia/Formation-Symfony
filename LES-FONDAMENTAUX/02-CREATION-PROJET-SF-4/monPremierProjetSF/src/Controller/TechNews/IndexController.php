@@ -4,6 +4,7 @@ namespace App\Controller\TechNews;
 
 
 use App\Entity\Article;
+use App\Entity\Categorie;
 use App\Service\Article\ArticleProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +21,20 @@ class IndexController extends Controller
     public function index(ArticleProvider $articleProvider) {
 
         # Récupération des Articles depuis ArticleProvider
-        $articles = $articleProvider->getArticles();
+        # $articles = $articleProvider->getArticles();
+
+        # Récupération des articles depuis la BDD
+        $articles = $this->getDoctrine()->getRepository(Article::class)
+            ->findAll();
+
+        # Récupération des articles du spotlight
+        $spotlight = $this->getDoctrine()->getRepository(Article::class)
+            ->findSpotlightArticles();
 
         # Transmission à la vue
         return $this->render('index/index.html.twig', [
-            'articles' => $articles
+            'articles' => $articles,
+            'spotlight' => $spotlight
         ]);
     }
 
@@ -38,7 +48,18 @@ class IndexController extends Controller
      * @return Response
      */
     public function categorie($libellecategorie = 'tout') {
-        return $this->render('index/categorie.html.twig');
+
+        $categorie = $this->getDoctrine()
+            ->getRepository(Categorie::class)
+            ->findOneBy(
+                ['libelle' => $libellecategorie]
+            );
+
+        $articles = $categorie->getArticles();
+
+        return $this->render('index/categorie.html.twig', [
+            'articles' => $articles
+        ]);
     }
 
     /**
@@ -87,6 +108,24 @@ class IndexController extends Controller
             'suggestions' => $suggestions,
             #   'categorie' => $categorie
         ]);
+    }
+
+    public function sidebar() {
+
+        # Récupération du Répository
+        $repository = $this->getDoctrine()->getRepository(Article::class);
+
+        # Récupération des 5 derniers articles
+        $articles   = $repository->findLastFiveArticle();
+
+        # Récupération des articles à la position "special"
+        $special    = $repository->findSpecialArticles();
+
+        return $this->render('components/_sidebar.html.twig', [
+            'articles'  => $articles,
+            'special'   => $special
+        ]);
+
     }
 
 }

@@ -2,20 +2,16 @@
 <nav class="menu-res hidden-lg hidden-md ">
     <div class="menu-res-inner">
         <ul>
-            <li>
+            <li {% if(active == 'index') %}class="current"{%endif%}>
                 <a href="{{ url('index') }}">
                     Accueil
                 </a>
             </li>
-            <li>
-                <a href="{{ url('index_categorie', { libellecategorie : 'business' }) }}">Business</a>
-            </li>
-            <li>
-                <a href="{{ url('index_categorie', { libellecategorie : 'computing' }) }}">Computing</a>
-            </li>
-            <li>
-                <a href="{{ url('index_categorie', { libellecategorie : 'tech' }) }}">Tech </a>
-            </li>
+            {% for categorie in categories %}
+                <li {% if(active == categorie.libelle) %}class="current"{%endif%} >
+                    <a href="{{ url('index_categorie', { libellecategorie : categorie.libelle | lower }) }}">categorie.libelle</a>
+                </li>
+            {% endfor %}
         </ul>
     </div>
 </nav>
@@ -38,20 +34,14 @@
                 <span>MENU</span>
             </div>
             <ul class="hidden-sm hidden-xs">
-                <li>
+                <li {% if(active == 'index') %}class="current"{%endif%}>
                     <a href="{{ url('index') }}">
                         Accueil
                     </a>
                 </li>
-                <li>
-                    <a href="{{ url('index_categorie', { libellecategorie : 'business' }) }}">Business</a>
-                </li>
-                <li>
-                    <a href="{{ url('index_categorie', { libellecategorie : 'computing' }) }}">Computing</a>
-                </li>
-                <li>
-                    <a href="{{ url('index_categorie', { libellecategorie : 'tech' }) }}">Tech </a>
-                </li>
+                {% for categorie in categories %}
+                    <li {% if(active == categorie.libelle) %}class="current"{%endif%}><a href="{{ url('index_categorie', { 'libellecategorie' : categorie.libelle | slugify }) }}">{{ categorie.libelle }}</a></li>
+                {% endfor %}
             </ul>
             <div class="search-icon">
                 <div class="search-icon-inner">

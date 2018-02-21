@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04-TEMPLATING DANS SF4</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="le-templating--symfony-4">Le Templating | Symfony 4</h1>
+<p>Nous allons mettre en place le thème de notre projet TechNews.<br>
+Mais avant cela, nous allons ajouter à notre projet Twig.</p>
+<blockquote>
+<p>Doc de référence :<br>
+<a href="https://symfony.com/doc/current/templating.html">https://symfony.com/doc/current/templating.html</a><br>
+<a href="https://twig.symfony.com">https://twig.symfony.com</a></p>
+</blockquote>
+<h2 id="présentation-de-twig">Présentation de Twig</h2>
+<p>Les templates vont nous permettre de séparer le code PHP du code HTML/XML/Text, etc. Seulement, pour faire du HTML de présentation, on a toujours besoin d’un peu de code dynamique : faire une boucle pour afficher toutes les annonces de notre plateforme, créer des conditions pour afficher un menu différent pour les utilisateurs authentifiés ou non, etc. Pour faciliter ce code dynamique dans les templates, le moteur de templates Twig offre son pseudo-langage à lui.<br>
+<em>Source : Openclassroom.</em></p>
+<h2 id="mise-en-place-de-twig">Mise en Place de Twig</h2>
+<p>Nous allons lancer dans notre console :</p>
+<blockquote>
+<p>composer require twig</p>
+</blockquote>
+<p>Ce qui aura pour effet de charger dans notre projet SF4 tous le nécessaire au fonctionnement de twig !</p>
+<p><strong>Nous allons maintenant procéder aux étapes suivantes :</strong></p>
+<ul>
+<li>Création de notre structure HTML de base : <strong>base.html.twig</strong> ;</li>
+<li>Hériter du <strong>Controller</strong> Symfony ;</li>
+<li>Rendu du template Twig sur notre page d’Accueil.</li>
+</ul>
+<blockquote>
+<p>Doc de Référence<br>
+<a href="https://symfony.com/doc/current/controller.html#the-base-controller-classes-services">https://symfony.com/doc/current/controller.html#the-base-controller-classes-services</a> et <a href="https://symfony.com/doc/current/controller.html#rendering-templates">https://symfony.com/doc/current/controller.html#rendering-templates</a></p>
+</blockquote>
+<pre><code>class IndexController extends Controller
+...
+public function index() {
+    return $this-&gt;render('base.html.twig');
+}
+</code></pre>
+<p>Une fois notre thème de base mis en place, nous allons mettre en place notre thème TechNews.</p>
+<h2 id="mise-en-place-de-encore-webpack">Mise en Place de Encore Webpack</h2>
+<blockquote>
+<p>Doc de référence : <a href="https://symfony.com/doc/current/best_practices/web-assets.html">https://symfony.com/doc/current/best_practices/web-assets.html</a><br>
+<a href="https://symfony.com/doc/current/templating.html#linking-to-assets">https://symfony.com/doc/current/templating.html#linking-to-assets</a></p>
+</blockquote>
+<p>Depuis SF4, nous avons la possibilité d’intégrer facilement Webpack à Symfony grâce à Encore.</p>
+<h3 id="présentation-de-webpack">Présentation de Webpack</h3>
+<p>Pas besoin de s’appeler Einstein pour comprendre les intentions de Webpack en interprétant le nom : web + pack. Faire un pack prêt pour le web.</p>
+<p>Il vous permettra de faire bien des choses : utiliser un serveur local, utiliser le Live Reload, minifier vos fichiers CSS, JS, mais aussi et surtout compiler tous vos fichiers pour les regrouper en un seul. Pratique pour bien des raisons, notamment pour la performance de votre app !</p>
+<blockquote>
+<p>Tuto à lire :<br>
+<a href="http://putaindecode.io/fr/articles/js/webpack/">http://putaindecode.io/fr/articles/js/webpack/</a><br>
+<a href="https://www.alsacreations.com/tuto/lire/1754-debuter-avec-webpack.html">https://www.alsacreations.com/tuto/lire/1754-debuter-avec-webpack.html</a></p>
+</blockquote>
+<h3 id="présentation-de-encore">Présentation de Encore</h3>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/frontend.html#encore-toc">https://symfony.com/doc/current/frontend.html#encore-toc</a></p>
+</blockquote>
+<p>“Encore”, est le nouveau système de gestion des assets (JS, CSS) basé sur Webpack de Symfony.</p>
+<p>Webpack Encore est une façon simple d’intégrer WebPack dans votre projet symfony.</p>
+<h3 id="installation-de-encore">Installation de Encore</h3>
+<blockquote>
+<p>Doc de Référence :<br>
+<a href="https://symfony.com/doc/current/frontend/encore/installation.html">https://symfony.com/doc/current/frontend/encore/installation.html</a></p>
+</blockquote>
+<p>Vu que nous travaillons avec Symfony Flex (v4) nous allons utiliser composer + yarn | npm.</p>
+<blockquote>
+<p><em>NOTA BENE : Explication de Yarn / Npm</em></p>
+</blockquote>
+<p>Dans notre console :</p>
+<pre><code>composer require encore
+npm install
+</code></pre>
+<p>Nous pouvons ensuite finaliser la configuration de nos assets.</p>
+<blockquote>
+<p>Doc de Référence :<br>
+<a href="https://symfony.com/doc/current/frontend/encore/simple-example.html">https://symfony.com/doc/current/frontend/encore/simple-example.html</a></p>
+</blockquote>
+<h3 id="configuration-de-encore--webpack">Configuration de Encore / Webpack</h3>
+<p>Nous allons maintenant ouvrir le fichier <strong>webpack.config.js</strong><br>
+Symfony nous à déjà mis en place une configuration de base que nous allons adapter.</p>
+<p>Nous allons aussi rajouter tout nos fichiers CSS et JS.<br>
+<em>Il seront ensuite compilé et regroupé en un seul fichier CSS et JS.</em></p>
+<pre><code>// -- Chargement du CSS
+require('./css/main.scss');
+
+// -- Chargement du JS
+require('./js/jquery.min');
+require('./js/bootstrap.js');
+require('./js/owl.carousel.min.js');
+require('./js/main.js');
+</code></pre>
+<p>Ensuite via notre console nous allons lancer la compilation de nos assets :</p>
+<pre><code>yarn run encore dev
+</code></pre>
+<p>Vous devriez maintenant voir dans votre dossier <strong>public</strong> un nouveua dossier <strong>build</strong> contenant nos assets avec un fichier <strong>app.css</strong> et <strong>app.js</strong></p>
+<p>C’est deux fichiers contiennent le regroupement de l’ensemble de nos fichiers CSS et JS.</p>
+<h2 id="mise-en-place-de-notre-thème">Mise en Place de notre Thème</h2>
+<p>Nous allons mettre en place l’architecture nécessaire au fonctionnement de notre thème TechNews en nous appuyant sur Twig.</p>
+<ol>
+<li>Création du Menu <strong>_nav_menu.html.twig</strong></li>
+<li>Création du Footer <strong>_footer.html.twig</strong></li>
+<li>Création de la Sidebar <strong>_sidebar.html.twig</strong></li>
+<li>Création d’un Layout <strong>layout.html.twig</strong></li>
+<li>Création de notre Vue Accueil <strong>index.html.twig</strong></li>
+</ol>
+<h3 id="nous-allons-maintenant-créer-nos-différentes-vues-">Nous allons maintenant créer nos différentes vues :</h3>
+<p>Nous avons maintenant mis en place notre architecture de base, nous allons pouvoir entrer en détail dans nos vues. <strong>Nous allons mettre en place les views suivantes :</strong></p>
+<ul>
+<li>Affichage de la Page d’Accueil</li>
+<li>Affichage des Articles d’une Catégorie</li>
+<li>Affichage d’un Article du site.</li>
+</ul>
+<h3 id="génération-des-urls-">Génération des URLs :</h3>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/templating.html#linking-to-pages">https://symfony.com/doc/current/templating.html#linking-to-pages</a></p>
+</blockquote>
+<p>Nous allons maintenant mettre en place la navigation inter-pages de notre site.</p>
+<pre><code>&lt;a href="{{ url('index') }}"&gt;Accueil&lt;/a&gt;
+</code></pre>
+<p>Ici, la fonction <strong>url()</strong> va demander à Symfony de créer une URL absolue pour la route index. Le résultat après compilation sera alors :</p>
+<pre><code>&lt;a href="http://localhost:8000/"&gt;Accueil&lt;/a&gt;
+</code></pre>
+<p>Lorsqu’il y à des paramètres, nous procédons de la façons suivantes :</p>
+<pre><code>&lt;a href="{{ url('index_categorie', { libellecategorie : 'business' }) }}"&gt;Business&lt;/a&gt;
+</code></pre>
+<p>Ce qui donnera :</p>
+<pre><code>&lt;a href="http://localhost:8000/categorie/business"&gt;Business&lt;/a&gt;
+</code></pre>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+</div>
+</body>
+
+</html>

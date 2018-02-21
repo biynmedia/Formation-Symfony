@@ -1,5 +1,5 @@
 {% extends 'layout.html.twig' %}
-
+{% set active = app.request.get('libellecategorie') | capitalize %}
 {% block page_title %}
     Accueil
 {% endblock %}
@@ -9,46 +9,54 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="row">
         <!--colleft-->
         <div class="col-md-8 col-sm-12">
-            <div class="box-caption">
-                <span>{{ app.request.get('libellecategorie') }}</span>
-            </div>
-            <!--list-news-cate-->
-            <div class="list-news-cate">
-                <article class="news-cate-item">
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12">
-                            <a href="{{ url('index_article', {
-                                libellecategorie : 'computing',
-                                slugarticle      : 'slug-de-mon-article',
-                                idarticle        : 1 }) }}">
-                                <img alt="" src="{{ asset('images/product/2.jpg')}}">
-                            </a>
-                        </div>
-                        <div class="col-md-7 col-sm-7 col-xs-12">
-                            <h3><a href="{{ url('index_article', {
-                                    libellecategorie : 'computing',
-                                    slugarticle      : 'slug-de-mon-article',
-                                    idarticle        : 1 }) }}">Tip Aligning Digital Marketing with Business Goals and Objectives</a></h3>
-                            <div class="meta-post">
-                                <a href="#">
-                                    Hugo LIEGEARD
-                                </a>
-                                <em></em>
-                                <span>
-                                        2017-02-26 09:37:18
-                                    </span>
+            {% if articles is not empty %}
+                <div class="box-caption">
+                    <span>{{ app.request.get('libellecategorie') }}</span>
+                </div>
+                <!--list-news-cate-->
+                <div class="list-news-cate">
+                    {% for article in articles %}
+                        <article class="news-cate-item">
+                            <div class="row">
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                    <a href="{{ url('index_article', {
+                                        libellecategorie : article.categorie.libelle | slugify,
+                                        slugarticle      : article.titre | slugify,
+                                        id        : article.id }) }}">
+                                        <img alt="{{ article.titre }}" src="{{ asset('images/product/' ~ article.featuredimage) }}">
+                                    </a>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                    <h3><a href="{{ url('index_article', {
+                                            libellecategorie : article.categorie.libelle | slugify,
+                                            slugarticle      : article.titre | slugify,
+                                            id        : article.id }) }}">{{ article.titre }}</a></h3>
+                                    <div class="meta-post">
+                                        <a href="#">
+                                            {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
+                                        </a>
+                                        <em></em>
+                                        <span>
+                                            {{ article.datecreation | date('d/m/Y') }}
+                                        </span>
+                                    </div>
+                                    {{ article.contenu | accroche }}
+                                </div>
                             </div>
-                            Nulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere...
-                        </div>
-                    </div>
-                </article>
-            </div>
+                        </article>
+                    {% endfor %}
+                </div>
 
-            <div class="paging">
+            {% else %}
+                <div class="alert alert-danger">
+                    <strong>Aucune publication pour le moment.</strong>
+                </div>
+            {% endif %}
+
+            {#<div class="paging">
                 <a href="#">Prev</a>
                 <a href="#" class="current">1</a>
                 <a href="#">2</a>
@@ -56,12 +64,13 @@
                 <a href="#">4</a>
                 <a href="#">5</a>
                 <a href="#">Next</a>
-            </div>
+            </div>#}
 
         </div>
 
         {# Sidebar #}
-        {% include "components/_sidebar.html.twig" %}
+        {#{% include "components/_sidebar.html.twig" %}#}
+        {{ render(controller('App\\Controller\\TechNews\\IndexController::sidebar')) }}
 
     </div>
 

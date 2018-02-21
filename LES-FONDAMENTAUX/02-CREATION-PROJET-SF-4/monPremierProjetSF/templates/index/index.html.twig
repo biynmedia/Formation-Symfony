@@ -1,5 +1,5 @@
 {% extends 'layout.html.twig' %}
-
+{% set active = 'index' %}
 {% block page_title %}
     Accueil
 {% endblock %}
@@ -19,33 +19,35 @@
         </div>
         <!--sportlight-->
         <section class="owl-carousel owl-spotlight">
-            {% for article in articles %}
-                {% if article.spotlightarticle %}
-                    <div>
-                        <article class="spotlight-item">
-                            <div class="spotlight-img">
-                                <img alt="" src="images/product/16.jpg" class="img-responsive" />
-                                <a href="javascript:void(0)" class="cate-tag">{{ article.categorie.libellecategorie }}</a>
+            {% for article in spotlight %}
+                <div>
+                    <article class="spotlight-item">
+                        <div class="spotlight-img">
+                            <img alt="{{ article.titre }}" src="{{ asset('images/product/' ~ article.featuredimage) }}" class="img-responsive" />
+                            <a href="{{ url('index_categorie', { 'libellecategorie' : article.categorie.libelle | slugify }) }}" class="cate-tag">{{ article.categorie.libelle }}</a>
+                        </div>
+                        <div class="spotlight-item-caption">
+                            <h2 class="font-heading">
+                                <a href="{{ url('index_article', {
+                                    libellecategorie : article.categorie.libelle | slugify,
+                                    slugarticle      : article.titre | slugify,
+                                    id        : article.id }) }}">
+                                    {{ article.titre }}
+                                </a>
+                            </h2>
+                            <div class="meta-post">
+                                <a href="javascript:void(0)">
+                                    {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
+                                </a>
+                                <em></em>
+                                <span>
+                                {{ article.datecreation | date('d/m/Y') }}
+                            </span>
                             </div>
-                            <div class="spotlight-item-caption">
-                                <h2 class="font-heading">
-                                    <a href="javascript:void(0)">
-                                        {{ article.titrearticle }}
-                                    </a>
-                                </h2>
-                                <div class="meta-post">
-                                    <a href="javascript:void(0)">
-                                        {{ article.auteur.prenomauteur ~ ' ' ~ article.auteur.nomauteur }}
-                                    </a>
-                                    <em></em>
-                                    <span>
-                                    {{ article.datecreationarticle | date('d/m/Y') }}
-                                </span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                {% endif %}
+                        </div>
+                        {{ article.contenu | accroche }}
+                    </article>
+                </div>
             {% endfor %}
         </section>
 
@@ -56,19 +58,25 @@
                     <div class="col-md-4 col-sm-4 col-xs-12">
                         <div class="spotlight-item-thumb">
                             <div class="spotlight-item-thumb-img">
-                                <a href="javascript:void(0)">
-                                    <img alt="{{ article.titrearticle }}" src="{{ asset('images/product/'~article.featuredimagearticle) }}" />
+                                <a href="{{ url('index_article', {
+                                    libellecategorie : article.categorie.libelle | slugify,
+                                    slugarticle      : article.titre | slugify,
+                                    id        : article.id }) }}">
+                                    <img alt="{{ article.titre }}" src="{{ asset('images/product/'~article.featuredimage) }}" />
                                 </a>
-                                <a href="javascript:void(0)" class="cate-tag">{{ article.categorie.libellecategorie }}</a>
+                                <a href="{{ url('index_categorie', { 'libellecategorie' : article.categorie.libelle | slugify }) }}" class="cate-tag">{{ article.categorie.libelle }}</a>
                             </div>
-                            <h3><a href="javascript:void(0)">{{ article.titrearticle }}</a></h3>
+                            <h3><a href="{{ url('index_article', {
+                                    libellecategorie : article.categorie.libelle | slugify,
+                                    slugarticle      : article.titre | slugify,
+                                    id        : article.id }) }}">{{ article.titre }}</a></h3>
                             <div class="meta-post">
                                 <a href="javascript:void(0)">
-                                    {{ article.auteur.prenomauteur ~ ' ' ~ article.auteur.nomauteur }}
+                                    {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
                                 </a>
                                 <em></em>
                                 <span>
-                                {{ article.datecreationarticle | date('d/m/Y') }}
+                                {{ article.datecreation | date('d/m/Y') }}
                             </span>
                             </div>
                         </div>
@@ -79,7 +87,8 @@
     </div>
 
     {# Sidebar #}
-    {% include "components/_sidebar.html.twig" %}
+    {#{% include "components/_sidebar.html.twig" %}#}
+    {{ render(controller('App\\Controller\\TechNews\\IndexController::sidebar')) }}
 
 {% endblock %}
 

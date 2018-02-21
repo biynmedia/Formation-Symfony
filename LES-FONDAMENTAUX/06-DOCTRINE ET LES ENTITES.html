@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06-DOCTRINE ET LES ENTITES</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="doctrine--symfony-4">Doctrine | Symfony 4</h1>
+<p>Nous allons commencé à travailler avec notre base de données grâce à Doctrine.</p>
+<blockquote>
+<p>Doc de référence :<br>
+<a href="https://symfony.com/doc/current/doctrine.html">https://symfony.com/doc/current/doctrine.html</a></p>
+</blockquote>
+<h2 id="présentation-dun-orm">Présentation d’un ORM</h2>
+<p>Un ORM est une classe (ou bien plus souvent un ensemble de classes) visant à ce que l’utilisateur puisse manipuler ses tables de données comme si c’étaient des objets.</p>
+<blockquote>
+<p>Source : <a href="https://openclassrooms.com/courses/utilisation-d-un-orm-les-bases-de-doctrine">https://openclassrooms.com/courses/utilisation-d-un-orm-les-bases-de-doctrine</a></p>
+</blockquote>
+<h2 id="présentation-de-doctrine">Présentation de Doctrine</h2>
+<p>Doctrine est, comme vous devez maintenant vous douter, l’un des ORM les plus connus qui existent actuellement.<br>
+Il est utilisé dans des frameworks très connus (Symfony, Zend Framework), et est aussi simple à prendre en main que puissant.</p>
+<blockquote>
+<p>Source : <a href="https://openclassrooms.com/courses/utilisation-d-un-orm-les-bases-de-doctrine">https://openclassrooms.com/courses/utilisation-d-un-orm-les-bases-de-doctrine</a></p>
+</blockquote>
+<h2 id="installation-et-configuration-de-doctrine">Installation et Configuration de Doctrine</h2>
+<p>Afin de pouvoir utiliser doctrine, nous allons :</p>
+<ol>
+<li>Installer / Vérifier le composant Doctrine ORM</li>
+<li>Configurer la connexion à la BDD</li>
+</ol>
+<p><strong>Dans notre console :</strong></p>
+<pre><code>composer require doctrine maker
+</code></pre>
+<p>La configuration de la connexion à notre BDD est simple.<br>
+Les informations de connexion sont stocké dans une variable d’environnement : <strong>DATABASE_URL</strong> dans le fichier <strong>.env</strong> à la racine de votre projet.</p>
+<p>Dans la section, Doctrine nous allons modifier cette ligne :</p>
+<pre><code>### doctrine/doctrine-bundle ###
+DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name"
+</code></pre>
+<p>par</p>
+<pre><code>DATABASE_URL=mysql://root:@127.0.0.1:3306/technews
+</code></pre>
+<blockquote>
+<p>N’oubliez pas de créer votre base de données dans PhpMyAdmin…<br>
+Ou via la console : <em>php bin/console doctrine:database:create</em></p>
+</blockquote>
+<p><strong>Nous allons vérifier si notre configuration est correct :</strong></p>
+<pre><code>php bin/console doctrine:schema:validate
+[Mapping]  OK - The mapping files are correct.
+[Database] OK - The database schema is in sync with the mapping files.
+</code></pre>
+<p><strong>Nous pouvons maintenant créer notre base de données avec Doctrine !</strong></p>
+<h2 id="utilisation-de-doctrine">Utilisation de Doctrine</h2>
+<p>Pour notre projet nous auront besoin de mettre en place une classe pour les Articles, les Auteurs et les Catégories. De la même façon nous auront dans notre base de donnée les tables :</p>
+<ul>
+<li>article</li>
+<li>auteur</li>
+<li>categorie</li>
+</ul>
+<blockquote>
+<p>NOTA BENE : Symfony via Doctrine se chargera de la création et des updates de notre base de données. De notre côté nous travaillerons uniquement avec nos entités !</p>
+</blockquote>
+<p><strong>Demandons à Symfony de créer pour nous les Entités (class) Catégorie, Article et Auteur :</strong></p>
+<pre><code>php bin/console make:entity Categorie
+created: src/Entity/Categorie.php
+created: src/Repository/CategorieRepository.php
+
+php bin/console make:entity Article
+created: src/Entity/Article.php
+created: src/Repository/ArticleRepository.php
+
+php bin/console make:entity Auteur
+created: src/Entity/Auteur.php
+created: src/Repository/AuteurRepository.php
+</code></pre>
+<blockquote>
+<p>Doc de Référence :<br>
+<a href="https://symfony.com/doc/current/doctrine.html#mapping-more-fields-columns">https://symfony.com/doc/current/doctrine.html#mapping-more-fields-columns</a></p>
+</blockquote>
+<p>Grâce aux <strong>annotations</strong>, symfony sera en mesure d’<strong>associer</strong> <em>(mapping)</em> chaque propriétés de <strong>notre classe avec une table</strong> de notre base de donnée. Plus fort encore, nous pourront <strong>sauvegarder</strong> en base <strong>la totalité de notre objet</strong> Article, mais aussi <strong>interroger la table</strong> Article pour récupérer des Objets Articles.</p>
+<p><img src="https://symfony.com/doc/current/_images/mapping_single_entity.png" alt="enter image description here"></p>
+<p>Allons dans <strong>src/Entity/Categorie.php</strong><br>
+Créons les propriétés suivantes :</p>
+<ul>
+<li>id</li>
+<li>libelle</li>
+<li>article</li>
+</ul>
+<p>Allons dans <strong>src/Entity/Auteur.php</strong><br>
+Créons les propriétés suivantes :</p>
+<ul>
+<li>id</li>
+<li>prenom</li>
+<li>nom</li>
+<li>email</li>
+<li>password</li>
+<li>dateinscription</li>
+<li>roles</li>
+<li>derniereconnexion</li>
+<li>articles</li>
+</ul>
+<p>Allons dans <strong>src/Entity/Article.php</strong><br>
+Créons les propriétés suivantes :</p>
+<ul>
+<li>id</li>
+<li>titre</li>
+<li>contenu</li>
+<li>featuredimage</li>
+<li>special</li>
+<li>spotlight</li>
+<li>datecreation</li>
+<li>categorie</li>
+<li>auteur</li>
+</ul>
+<blockquote>
+<p>Doc de Référence : <a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/annotations-reference.html">http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/annotations-reference.html</a></p>
+</blockquote>
+<p>N’oubliez pas, chaque propriété correspond à une colonne dans notre base de donnée. Nous allons préciser cela grâce aux annotations :<br>
+Par exemple :</p>
+<pre><code>/**
+ * @ORM\Column(type="string", length=150)
+ */
+private $titre;
+</code></pre>
+<blockquote>
+<p>Atelier Mise en Place des Annotations pour les Entités Article, Catégorie et Auteur.</p>
+</blockquote>
+<p>Tout est correct, nous pouvons générer pour chaque entité nos <strong>getters</strong> et <strong>setters</strong>.</p>
+<h3 id="comment-gérer-les-relations-entre-les-tables-">Comment gérer les relations entre les tables ?</h3>
+<p>Il nous faut maintenant pouvoir gérer les relations entre nos tables. Plusieurs articles auront une catégorie, ou inversement, une catégorie aura plusieurs articles. Nous avons donc une relation <strong>ManyToOne</strong> et <strong>OneToMany</strong></p>
+<blockquote>
+<p>Doc de Référence :<br>
+<a href="https://symfony.com/doc/current/doctrine/associations.html#mapping-the-manytoone-relationship">https://symfony.com/doc/current/doctrine/associations.html#mapping-the-manytoone-relationship</a></p>
+</blockquote>
+<p>Pour mettre en place cette relation qui donnera naissance à une contrainte de clé étrangère nous utilisons toujours les annotations.</p>
+<p><strong>src/Entity/Article</strong> :</p>
+<pre><code>/**
+ * @ORM\ManyToOne(targetEntity="App\Entity\Categorie", inversedBy="articles")
+ * @ORM\JoinColumn(nullable=false)
+ */
+private $categorie;
+</code></pre>
+<p><strong>src/Entity/Categorie</strong> :</p>
+<pre><code>/**
+ * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="categorie")
+ */
+private $articles;
+// ...
+public function __construct()
+{
+    $this-&gt;articles = new ArrayCollection();
+}
+</code></pre>
+<p>Grâce aux annotations, nous venons d’indiquer à Doctrine d’associer chaque article à une catégorie, et une catégorie à chaque article.</p>
+<p><strong>Faisons pareil pour Auteur :</strong></p>
+<p><strong>src/Entity/Article</strong> :</p>
+<pre><code>/**
+ * @ORM\ManyToOne(targetEntity="App\Entity\Auteur", inversedBy="articles")
+ * @ORM\JoinColumn(nullable=false)
+ */
+private $auteur;
+</code></pre>
+<p><strong>src/Entity/Auteur</strong> :</p>
+<pre><code>/**
+ * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="auteur")
+ * @ORM\JoinColumn(nullable=true)
+ */
+private $articles;
+// ...
+public function __construct() {
+    $this-&gt;articles = new ArrayCollection();
+}
+</code></pre>
+<p>Nous pouvons vérifier la validité de nos relations :</p>
+<pre><code>php bin/console doctrine:schema:validate
+[Mapping]  OK - The mapping files are correct.
+[Database] FAIL - The database schema is not in sync with the current mapping file.
+</code></pre>
+<p>Le FAIL est normal, nous n’avons pas encore sauvegarder nos modifications en BDD.<br>
+En option :</p>
+<pre><code>php bin/console doctrine:mapping:info
+Found 3 mapped entities:
+[OK]   App\Entity\Article
+[OK]   App\Entity\Auteur
+[OK]   App\Entity\Categorie
+</code></pre>
+<p>Nous allons ensuite demandé a Doctrine, via Symfony de créer nos tables. Dans la console :</p>
+<pre><code>php bin/console doctrine:migrations:diff
+</code></pre>
+<p>Grâce à cette commande, doctrine va automatiquement comparer notre base de donnée avec nos entités et générer le code SQL qui convient.</p>
+<blockquote>
+<p>Regardez dans le dossier <strong>src/Migrations</strong></p>
+</blockquote>
+<p>Enfin pour exécuter les requètes :</p>
+<pre><code>php bin/console doctrine:migrations:migrate
+</code></pre>
+<p>Maintenant, vous pouvez jeter un oeil dans votre BDD, vous allez voir que Doctrine à générer absolument tous pour vous ! Tables, Colonnes, Contraintes, …</p>
+<h3 id="ajouter-des-données-exemple">Ajouter des données (Exemple)</h3>
+<blockquote>
+<p>Doc de Référence :<br>
+<a href="https://symfony.com/doc/current/doctrine/associations.html#saving-related-entities">https://symfony.com/doc/current/doctrine/associations.html#saving-related-entities</a></p>
+</blockquote>
+<p>Lorsque vous commencez à utiliser un ORM tel que doctrine, le plus difficile est d’arrêter de penser à votre base de donnée, mais plutôt de réfléchir avec vos objets.</p>
+<p>Voyons comment ajouter un Article dans notre base de données.<br>
+Créons un nouveau controller : <strong>ArticleController</strong></p>
+<pre><code>php bin/console make:controller ArticleController
+</code></pre>
+<blockquote>
+<p>Atelier : Création de ArticleController</p>
+</blockquote>
+<p>Il ne reste plus qu’à essayer :</p>
+<pre><code>http://localhost:8000/article
+</code></pre>
+<p>Vous pouvez également tester via la console :</p>
+<pre><code>php bin/console doctrine:query:sql "SELECT * FROM article"
+</code></pre>
+<h3 id="afficher-un-article">Afficher un Article</h3>
+<p>Allons dans notre <strong>IndexController::article()</strong> nous allons mettre à jour notre fonction pour afficher un article.</p>
+<ol>
+<li>On récupère notre article grâce à find()</li>
+<li>On transmet à la vue les informations</li>
+</ol>
+<p>Exemple :</p>
+<pre><code>$article = $this-&gt;getDoctrine()
+            -&gt;getRepository(Article::class)
+            -&gt;find($idarticle);
+// ...
+return $this-&gt;render('index/article.html.twig', [
+    'article' =&gt; $article
+]);
+</code></pre>
+<p>Dans notre vue, dans notre block <em>“content”</em> :</p>
+<pre><code>{{ dump(article) }}
+</code></pre>
+<p>Pour accéder à la catégorie, doctrine se charge de faire silencieusement une requête et récupérer les informations :</p>
+<pre><code>{{ dump(article.categorie.libelle) }}
+</code></pre>
+<h3 id="chargement-automatique-des-objets">Chargement Automatique des Objets</h3>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/doctrine.html#automatically-fetching-objects-paramconverter">https://symfony.com/doc/current/doctrine.html#automatically-fetching-objects-paramconverter</a></p>
+</blockquote>
+<h4 id="avant">Avant</h4>
+<p>Supposons la route :</p>
+<pre><code>/{libellecategorie}/{slugarticle}_{id}.html
+</code></pre>
+<p>Nous récupérons dans notre contrôleur les paramètres comme-ci :</p>
+<pre><code>public function article($libellecategorie, $slugarticle, $id)
+</code></pre>
+<p>Nous faisons ensuite notre requête en récupération comme vue plus haut.</p>
+<h4 id="après">Après</h4>
+<p>Ce que nous pouvons faire, c’est directement dans notre contrôleur injecté notre Objet Article ! Symfony se chargera alors grâce à l’id présent dans la route de retourner à notre contrôleur l’objet de l’Article !</p>
+<pre><code>public function article(Article $article)
+</code></pre>
+<p>Autrement dit, cette fonctionnalité de <strong>SensioFrameworkExtraBundle</strong> permettra à symfony de convertir AUTOMATIQUEMENT votre paramètre <strong>id</strong> en objet.</p>
+<h2 id="repository">Repository</h2>
+<p>Supposons maintenant que nous souhaiterions récupérer les informations suivantes :</p>
+<ol>
+<li>Les 5 derniers articles de la BDD trier par ordre décroissant.</li>
+<li>Récupérer tout les articles d’une catégorie sauf l’article en cours, 3 articles maximum, par ordre décroissant. (Afficher des suggestions de lecture)</li>
+</ol>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/doctrine/associations.html#joining-related-records">https://symfony.com/doc/current/doctrine/associations.html#joining-related-records</a></p>
+</blockquote>
+<p>Nous allons créer notre propre fonction dans  <strong>src/Repository/ArticleRepository</strong> :</p>
+<p>Pour la récupération des 5 derniers articles du site :</p>
+<pre><code>public function findLastFiveArticle()
+{
+    return $this-&gt;createQueryBuilder('a')
+        -&gt;orderBy('a.id', 'DESC')
+        -&gt;setMaxResults(5)
+        -&gt;getQuery()
+        -&gt;getResult()
+        ;
+}
+</code></pre>
+<p>Pour récupérer des suggestions d’articles de la même catégorie :</p>
+<pre><code>public function findArticleSuggestions($idarticle, $idcategorie)
+{
+    return $this-&gt;createQueryBuilder('a')
+        -&gt;where('a.categorie = :categorie_id')-&gt;setParameter('categorie_id', $idcategorie)
+        -&gt;andWhere('a.id != :article_id')-&gt;setParameter('article_id', $idarticle)
+        -&gt;orderBy('a.id', 'DESC')
+        -&gt;setMaxResults(3)
+        -&gt;getQuery()
+        -&gt;getResult()
+        ;
+}
+</code></pre>
+<p>Ensuite dans notre contrôleur, nous pouvons récupérer les informations via :</p>
+<pre><code># Récupération des suggestions
+$suggestions = $this-&gt;getDoctrine()
+    -&gt;getRepository(Article::class)
+    -&gt;findArticleSuggestions($article-&gt;getId(),$article-&gt;getCategorie()-&gt;getId());
+</code></pre>
+<p>Nous avons dans notre exemple utilisé le QueryBuilder de Doctrine, mais vous pouvez obtenir le même résultat en utilisant le DQL <em>(CreateQuery)</em> : <a href="http://symfony.com/doc/current/doctrine.html#querying-with-dql-or-sql">http://symfony.com/doc/current/doctrine.html#querying-with-dql-or-sql</a></p>
+<p><strong>Créez également les fonctions suivantes :</strong></p>
+<ul>
+<li>findSpotlightArticles()</li>
+<li>findSpecialArticles()</li>
+</ul>
+<p>A ce stade, nous savons maintenant créer et récupérer nos informations depuis la BDD.</p>
+<blockquote>
+<p>Pour mettre à jours des données : <a href="https://symfony.com/doc/current/doctrine.html#updating-an-object">https://symfony.com/doc/current/doctrine.html#updating-an-object</a></p>
+</blockquote>
+<p>Ou :</p>
+<blockquote>
+<p>Pour supprimer des données :<br>
+<a href="https://symfony.com/doc/current/doctrine.html#deleting-an-object">https://symfony.com/doc/current/doctrine.html#deleting-an-object</a></p>
+</blockquote>
+<p>Sur la base de ce que nous venons de voir, récupérez maintenant depuis la base de données :</p>
+<ul>
+<li>Les articles de la page d’accueil ;</li>
+<li>Les articles du Spotlight de la page d’accueil ;</li>
+<li>Les articles d’une catégorie ;</li>
+<li>L’ Affichage d’un article et des suggestions.</li>
+</ul>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+</div>
+</body>
+
+</html>
