@@ -1,0 +1,49 @@
+{% extends "layout.html.twig" %}
+
+{% set active = 'inscription' %}
+{% block page_title %} Inscription {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-6 col-xs-push-3">
+            <h2 class="text-center">Inscription d'un Membre</h2>
+
+            {% if form_errors(form.email) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.email) }}
+                </div>
+            {% endif %}
+
+            <form action="{{ url('security_inscription') }}" method="POST"
+                  class="form-horizontal">
+
+                {# Prénom et Nom #}
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        {{ form_row(form.prenom) }}
+                    </div>
+                    <div class="col-xs-6">
+                        {{ form_row(form.nom) }}
+                    </div>
+                </div>
+
+                {# Email et Mot de Passe #}
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="col-xs-6">
+                        {{ form_row(form.password) }}
+                    </div>
+                </div>
+
+                {# Bouton Submit #}
+                {{ form_end(form) }}
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

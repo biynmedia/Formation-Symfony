@@ -12,6 +12,12 @@
                     <a href="{{ url('index_categorie', { libellecategorie : categorie.libelle | lower }) }}">categorie.libelle</a>
                 </li>
             {% endfor %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li><a href="{{ url('deconnexion') }}">Déconnexion</a></li>
+            {% else %}
+                <li><a href="{{ url('security_connexion') }}">Connexion</a></li>
+                <li><a href="{{ url('security_inscription') }}">Inscription</a></li>
+            {% endif %}
         </ul>
     </div>
 </nav>
@@ -42,6 +48,12 @@
                 {% for categorie in categories %}
                     <li {% if(active == categorie.libelle) %}class="current"{%endif%}><a href="{{ url('index_categorie', { 'libellecategorie' : categorie.libelle | slugify }) }}">{{ categorie.libelle }}</a></li>
                 {% endfor %}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li><a href="{{ url('deconnexion') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ url('security_connexion') }}">Connexion</a></li>
+                    <li><a href="{{ url('security_inscription') }}">Inscription</a></li>
+                {% endif %}
             </ul>
             <div class="search-icon">
                 <div class="search-icon-inner">

@@ -1,13 +1,27 @@
 security:
+    encoders:
+        App\Entity\Auteur: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: ~ }
+        auteur_provider:
+            entity:
+                class: App\Entity\Auteur
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: true
+            form_login:
+              login_path: security_connexion
+              check_path: security_connexion
+            http_basic: ~
+            provider: auteur_provider
+            logout:
+              path:   /deconnexion
+              target: /
 
             # activate different ways to authenticate
 
@@ -22,3 +36,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
+    role_hierarchy:
+        ROLE_AUTEUR:       ROLE_MEMBRE
+        ROLE_ADMIN: [ROLE_AUTEUR, ROLE_ALLOWED_TO_SWITCH]

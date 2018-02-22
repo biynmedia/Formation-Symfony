@@ -19,3 +19,6 @@ mentions_legales:
     controller:   Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
     defaults:
         template: static/mentionslegales.html.twig
+
+deconnexion:
+    path: /deconnexion

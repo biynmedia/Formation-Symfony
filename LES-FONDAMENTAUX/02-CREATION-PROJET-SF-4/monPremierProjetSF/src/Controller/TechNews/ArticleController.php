@@ -6,6 +6,7 @@ use App\Controller\Helper;
 use App\Entity\Article;
 use App\Entity\Auteur;
 use App\Entity\Categorie;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -67,6 +68,7 @@ class ArticleController extends Controller
 
     /**
      * Formulaire pour ajouter un article
+     * @Security("has_role('ROLE_AUTEUR')")
      * @Route("/creer-un-article", name="article_add")
      */
     public function addarticle(Request $request) {
