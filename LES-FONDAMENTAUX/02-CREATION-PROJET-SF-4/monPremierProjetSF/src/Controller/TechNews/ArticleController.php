@@ -6,6 +6,7 @@ use App\Controller\Helper;
 use App\Entity\Article;
 use App\Entity\Auteur;
 use App\Entity\Categorie;
+use App\Form\ArticleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -85,71 +86,11 @@ class ArticleController extends Controller
         $article->setAuteur($auteur);
 
         # Créer un Formulaire permettant l'ajout d'un Article
-        $form = $this->createFormBuilder($article)
-
-            # Champ TITREARTICLE
-            ->add('titre', TextType::class, [
-                'required'      => true,
-                'label'         => false,
-                'attr'          => [
-                    'class'         =>  'form-control',
-                    'placeholder'   =>  'Titre de l\'Article...'
-                ]
-            ])
-
-            # Champ CATEGORIE
-            ->add('categorie', EntityType::class, [
-                'class' => Categorie::class,
-                'choice_label' => 'libelle',
-                'expanded'  => false,
-                'multiple'  => false,
-                'label'     => false,
-                'attr'          => [
-                    'class'         =>  'form-control'
-                ]
-            ])
-
-            # Champ CONTENUARTICLE
-            ->add('contenu', TextareaType::class, [
-                'required'      => true,
-                'label'         => false,
-                'attr'          => [
-                    'class'         =>  'form-control'
-                ]
-            ])
-
-            # FEATUREDIMAGEARTICLE
-            ->add('featuredimage', FileType::class, [
-                'required'  => false,
-                'label'     => false,
-                'attr'      => [
-                    'class' => 'dropify'
-                ]
-            ])
-
-            # SPECIALARTICLE & SPOTLIGHTARTICLE
-            ->add('special', CheckboxType::class, [
-                'required'  => false,
-                'label'     => false,
-            ])
-            ->add('spotlight', CheckboxType::class, [
-                'required'  => false,
-                'label'     => false,
-            ])
-
-            ->add('submit', SubmitType::class, [
-                'label' => 'Publier',
-                'attr'      => [
-                    'class' => 'btn btn-primary'
-                ]
-            ])
-
+        $form = $this->createForm(ArticleType::class);
             /**
              * Maintenant que tous les champs ont été créés, nous allons
              * pouvoir récupérer le formulaire
              */
-
-            ->getForm();
 
             # Traitement des données POST
             $form->handleRequest($request);
