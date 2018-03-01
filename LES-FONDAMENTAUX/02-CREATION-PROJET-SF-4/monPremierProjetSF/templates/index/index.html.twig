@@ -26,14 +26,11 @@
                     <article class="spotlight-item">
                         <div class="spotlight-img">
                             <img alt="{{ article.titre }}" src="{{ asset('images/product/' ~ article.featuredimage) }}" class="img-responsive" />
-                            <a href="{{ url('index_categorie', { 'libellecategorie' : article.categorie.libelle | slugify }) }}" class="cate-tag">{{ article.categorie.libelle }}</a>
+                            <a href="{{ article.categorie | catlink }}" class="cate-tag">{{ article.categorie.libelle }}</a>
                         </div>
                         <div class="spotlight-item-caption">
                             <h2 class="font-heading">
-                                <a href="{{ url('index_article', {
-                                    libellecategorie : article.categorie.libelle | slugify,
-                                    slugarticle      : article.titre | slugify,
-                                    id        : article.id }) }}">
+                                <a href="{{ article | artlink }}">
                                     {{ article.titre }}
                                 </a>
                             </h2>
@@ -60,18 +57,12 @@
                     <div class="col-md-4 col-sm-4 col-xs-12">
                         <div class="spotlight-item-thumb">
                             <div class="spotlight-item-thumb-img">
-                                <a href="{{ url('index_article', {
-                                    libellecategorie : article.categorie.libelle | slugify,
-                                    slugarticle      : article.titre | slugify,
-                                    id        : article.id }) }}">
+                                <a href="{{ article | artlink }}">
                                     <img alt="{{ article.titre }}" src="{{ asset('images/product/'~article.featuredimage) }}" />
                                 </a>
-                                <a href="{{ url('index_categorie', { 'libellecategorie' : article.categorie.libelle | slugify }) }}" class="cate-tag">{{ article.categorie.libelle }}</a>
+                                <a href="{{ article.categorie | catlink }}" class="cate-tag">{{ article.categorie.libelle }}</a>
                             </div>
-                            <h3><a href="{{ url('index_article', {
-                                    libellecategorie : article.categorie.libelle | slugify,
-                                    slugarticle      : article.titre | slugify,
-                                    id        : article.id }) }}">{{ article.titre }}</a></h3>
+                            <h3><a href="{{ article | artlink }}">{{ article.titre }}</a></h3>
                             <div class="meta-post">
                                 <a href="javascript:void(0)">
                                     {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}

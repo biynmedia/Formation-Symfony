@@ -20,5 +20,7 @@ class ArticleProvider
             printf('Unable to parse the YAML string: %s', $e->getMessage());
         }
 
+        return [];
+
     }
 }

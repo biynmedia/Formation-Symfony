@@ -22,18 +22,12 @@
                         <article class="news-cate-item">
                             <div class="row">
                                 <div class="col-md-5 col-sm-5 col-xs-12">
-                                    <a href="{{ url('index_article', {
-                                        libellecategorie : article.categorie.libelle | slugify,
-                                        slugarticle      : article.titre | slugify,
-                                        id        : article.id }) }}">
+                                    <a href="{{ article | artlink }}">
                                         <img alt="{{ article.titre }}" src="{{ asset('images/product/' ~ article.featuredimage) }}">
                                     </a>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-xs-12">
-                                    <h3><a href="{{ url('index_article', {
-                                            libellecategorie : article.categorie.libelle | slugify,
-                                            slugarticle      : article.titre | slugify,
-                                            id        : article.id }) }}">{{ article.titre }}</a></h3>
+                                    <h3><a href="{{ article | artlink }}">{{ article.titre }}</a></h3>
                                     <div class="meta-post">
                                         <a href="#">
                                             {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}

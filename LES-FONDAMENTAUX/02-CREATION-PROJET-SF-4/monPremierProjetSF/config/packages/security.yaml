@@ -19,6 +19,7 @@ security:
               check_path: security_connexion
             http_basic: ~
             provider: auteur_provider
+            logout_on_user_change: true
             logout:
               path:   /deconnexion
               target: /

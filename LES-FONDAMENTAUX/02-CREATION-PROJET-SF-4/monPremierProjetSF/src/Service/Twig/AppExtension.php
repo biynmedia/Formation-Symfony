@@ -4,12 +4,22 @@ namespace App\Service\Twig;
 
 
 use App\Controller\Helper;
+use App\Entity\Article;
+use App\Entity\Categorie;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
 
 class AppExtension extends AbstractExtension
 {
 
     use Helper;
+
+    private $router;
+
+    public function __construct(UrlGeneratorInterface $router)
+    {
+        $this->router = $router;
+    }
 
     public function getFilters()
     {
@@ -41,7 +51,21 @@ class AppExtension extends AbstractExtension
 
                 return $this->slugify($text);
 
-            }) # -- Fin de Twig Filter Slugify
+            }), # -- Fin de Twig Filter Slugify
+
+            new \Twig_Filter('artlink', function(Article $article) {
+                return $this->router->generate('index_article', [
+                    'libellecategorie'  => $this->slugify($article->getCategorie()->getLibelle()),
+                    'slugarticle'       => $this->slugify($article->getTitre()),
+                    'id'                => $article->getId()
+                ]);
+            }), # -- Fin de Twig Filter artlink
+
+            new \Twig_Filter('catlink', function(Categorie $categorie) {
+                return $this->router->generate('index_categorie', [
+                    'libellecategorie'  => $this->slugify($categorie->getLibelle())
+                ]);
+            }) # -- Fin de Twig Filter artlink
 
         ]; # -- Fin du Array
 

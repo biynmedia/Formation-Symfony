@@ -42,16 +42,10 @@
             <ul class="list-news-popular">
                 {% for article in articles %}
                     <li>
-                        <a href="{{ url('index_article', {
-                            libellecategorie : article.categorie.libelle | slugify,
-                            slugarticle      : article.titre | slugify,
-                            id        : article.id }) }}">
+                        <a href="{{ article | artlink }}">
                             <img alt="{{ article.titre }}" src="{{ asset('images/product/' ~ article.featuredimage) }}">
                         </a>
-                        <h3><a href="{{ url('index_article', {
-                                libellecategorie : article.categorie.libelle | slugify,
-                                slugarticle      : article.titre | slugify,
-                                id        : article.id }) }}">{{ article.titre }}</a></h3>
+                        <h3><a href="{{ article | artlink }}">{{ article.titre }}</a></h3>
                         <div class="meta-post">
                             <a href="javascript:void(0)">
                                 {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
@@ -126,16 +120,10 @@
         <div class="list-special">
             {% for article in special %}
                 <article class="news-two-large">
-                    <a href="{{ url('index_article', {
-                        libellecategorie : article.categorie.libelle | slugify,
-                        slugarticle      : article.titre | slugify,
-                        id        : article.id }) }}">
+                    <a href="{{ article | artlink }}">
                         <img alt="{{ article.titre }}" src="{{ asset('images/product/' ~ article.featuredimage) }}">
                     </a>
-                    <h3><a href="{{ url('index_article', {
-                            libellecategorie : article.categorie.libelle | slugify,
-                            slugarticle      : article.titre | slugify,
-                            id        : article.id }) }}">{{ article.titre }}</a></h3>
+                    <h3><a href="{{ article | artlink }}">{{ article.titre }}</a></h3>
                     <div class="meta-post">
                         <a href="javascript:void(0)">
                             {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
