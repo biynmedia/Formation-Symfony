@@ -13,10 +13,10 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700" rel="stylesheet">
     <!-- Vendor -->
-    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/normalize.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('build/app.css') }}" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="{{ asset('css/owl.carousel.min.css') }}" rel="stylesheet" />
 
     <!-- JavaScripts -->
@@ -46,6 +46,11 @@
     {# Pied de Page #}
     {% include "components/_footer.html.twig" %}
 
+    {# Newsletter Modal #}
+    {% if not app.session.get('isUserInvited') %}
+        {{ render(controller('App\\Controller\\TechNews\\NewsletterController::newsletter')) }}
+    {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -55,4 +60,13 @@
     <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+
+    {% if not app.session.get('isUserInvited') %}
+        <script type="text/javascript">
+            $(function(){
+                $("#newsletterModal").modal('show');
+            });
+        </script>
+    {% endif %}
+
 {% endblock %}
