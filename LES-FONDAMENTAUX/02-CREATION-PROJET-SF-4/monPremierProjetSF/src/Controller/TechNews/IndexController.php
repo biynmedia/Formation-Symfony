@@ -5,7 +5,7 @@ namespace App\Controller\TechNews;
 
 use App\Entity\Article;
 use App\Entity\Categorie;
-use App\Service\Article\ArticleProvider;
+use App\Service\Article\YamlProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +16,10 @@ class IndexController extends Controller
     /**
      * Page d'accueil de notre site
      * Configuration de notre route grâce dans routes.yaml
-     * @param ArticleProvider $articleProvider
+     * @param YamlProvider $articleProvider
      * @return Response
      */
-    public function index(ArticleProvider $articleProvider) {
+    public function index(YamlProvider $articleProvider) {
 
         # Récupération des Articles depuis ArticleProvider
         # $articles = $articleProvider->getArticles();

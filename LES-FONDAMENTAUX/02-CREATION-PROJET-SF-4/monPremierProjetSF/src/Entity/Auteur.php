@@ -200,11 +200,12 @@ class Auteur implements UserInterface
     }
 
     /**
-     * @param mixed $derniereconnexion
+     * @param string $timestamp
      */
-    public function setDerniereconnexion($derniereconnexion)
+    public function setDerniereconnexion($timestamp = 'now')
     {
-        $this->derniereconnexion = $derniereconnexion;
+        date_default_timezone_set('Europe/Paris');
+        $this->derniereconnexion = new \DateTime($timestamp);
     }
 
     /**

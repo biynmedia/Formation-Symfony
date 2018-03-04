@@ -4,7 +4,7 @@ namespace App\Service\Article;
 
 use Symfony\Component\Yaml\Yaml;
 
-class ArticleProvider
+class YamlProvider
 {
 
     /**
