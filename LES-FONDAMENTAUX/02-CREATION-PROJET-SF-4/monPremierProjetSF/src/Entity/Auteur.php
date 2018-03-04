@@ -180,7 +180,7 @@ class Auteur implements UserInterface
      */
     public function getRoles()
     {
-        return [$this->roles];
+        return $this->roles;
     }
 
     /**
@@ -188,7 +188,7 @@ class Auteur implements UserInterface
      */
     public function setRoles($roles)
     {
-        $this->roles = $roles;
+        $this->roles[] = $roles;
     }
 
     /**

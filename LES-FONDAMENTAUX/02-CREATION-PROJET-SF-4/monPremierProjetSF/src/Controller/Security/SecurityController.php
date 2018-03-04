@@ -10,6 +10,7 @@ namespace App\Controller\Security;
 
 
 use App\Entity\Auteur;
+use App\Form\AuteurType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -58,61 +59,7 @@ class SecurityController extends Controller
         $auteur->setRoles('ROLE_MEMBRE');
 
         # Créer un Formulaire permettant l'ajout d'un Auteur
-        $form = $this->createFormBuilder($auteur)
-
-            # Champ prenom
-            ->add('prenom', TextType::class, [
-                'required'      => true,
-                'label'         => false,
-                'attr'          => [
-                    'class'         =>  'form-control',
-                    'placeholder'   =>  'Saisissez votre Prénom'
-                ]
-            ])
-
-            # Champ nom
-            ->add('nom', TextType::class, [
-                'required'      => true,
-                'label'         => false,
-                'attr'          => [
-                    'class'         =>  'form-control',
-                    'placeholder'   =>  'Saisissez votre Nom'
-                ]
-            ])
-
-            # Champ email
-            ->add('email', EmailType::class, [
-                'required'      => true,
-                'label'         => false,
-                'attr'          => [
-                    'class'         =>  'form-control',
-                    'placeholder'   =>  'Saisissez votre Email'
-                ]
-            ])
-
-            # Champ mot de passe
-            ->add('password', PasswordType::class, [
-                'required'      => true,
-                'label'         => false,
-                'attr'          => [
-                    'class'         =>  'form-control',
-                    'placeholder'   =>  '*******'
-                ]
-            ])
-
-            ->add('submit', SubmitType::class, [
-                'label' => 'M\'inscrire !',
-                'attr'      => [
-                    'class' => 'btn btn-primary'
-                ]
-            ])
-
-        /**
-         * Maintenant que tous les champs ont été créés, nous allons
-         * pouvoir récupérer le formulaire
-         */
-
-        ->getForm();
+        $form = $this->createForm(AuteurType::class, $auteur);
 
         # Traitement des données POST
         $form->handleRequest($request);
