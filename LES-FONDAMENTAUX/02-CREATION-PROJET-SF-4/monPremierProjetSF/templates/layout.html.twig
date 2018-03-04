@@ -37,6 +37,9 @@
         </div>
     </div>
 
+    {{ dump(app.session.get('inviteUser')) }}
+    {{ dump(app.session.get('nbUserView')) }}
+
     {# Menu du Site #}
     {% include 'components/_nav_menu.html.twig' %}
 
@@ -47,26 +50,26 @@
     {% include "components/_footer.html.twig" %}
 
     {# Newsletter Modal #}
-    {% if not app.session.get('isUserInvited') %}
-        {{ render(controller('App\\Controller\\TechNews\\NewsletterController::newsletter')) }}
+    {% if isUserInvited() %}
+        {{ render(controller('App\\Controller\\TechNews\\NewsletterController::newsletter' )) }}
+        {% block final_javascripts %}
+            <script type="text/javascript">
+                $(function(){
+                    $("#newsletterModal").modal('show');
+                });
+            </script>
+        {% endblock %}
     {% endif %}
 
 {% endblock %}
 
 {% block javascripts %}
-    <!--script file-->
+
+    <!-- script files -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     {#<script src="{{ asset('build/app.js') }}"></script>#}
     <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-
-    {% if not app.session.get('isUserInvited') %}
-        <script type="text/javascript">
-            $(function(){
-                $("#newsletterModal").modal('show');
-            });
-        </script>
-    {% endif %}
 
 {% endblock %}

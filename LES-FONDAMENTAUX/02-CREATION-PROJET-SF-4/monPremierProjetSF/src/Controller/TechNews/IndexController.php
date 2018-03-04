@@ -6,6 +6,7 @@ namespace App\Controller\TechNews;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Service\Article\ArticleProvider;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

@@ -6,6 +6,7 @@ namespace App\Service\Twig;
 use App\Controller\Helper;
 use App\Entity\Article;
 use App\Entity\Categorie;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
 
@@ -15,10 +16,12 @@ class AppExtension extends AbstractExtension
     use Helper;
 
     private $router;
+    private $session;
 
-    public function __construct(UrlGeneratorInterface $router)
+    public function __construct(UrlGeneratorInterface $router, SessionInterface $session)
     {
         $this->router = $router;
+        $this->session = $session;
     }
 
     public function getFilters()
@@ -70,4 +73,20 @@ class AppExtension extends AbstractExtension
         ]; # -- Fin du Array
 
     }  # -- Fin de getFilters
+
+    public function getFunctions()
+    {
+        return [
+
+            new \Twig_Function('isUserInvited', function() {
+
+//                $this->session->set('nbUserView', $this->session->get('nbUserView') + 1);
+                return $this->session->get('inviteUser');
+
+            })
+
+        ];
+    }
+
+
 }
