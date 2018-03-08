@@ -27,3 +27,26 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+#    App\Mediator\Article\YamlColleague:
+#      tags:
+#        - app.article_source
+#
+#    App\Mediator\Article\DoctrineColleague:
+#      tags:
+#        - app.article_source
+
+# tous ce qui va etre du type de ... aura le tags ...
+    _instanceof:
+      App\Mediator\Article\ArticleAbstractColleague:
+        tags:
+          - app.article_source
+
+#    App\Mediator\Article\ArticleMediator:
+#      calls:
+#        - ['addSources', ['@App\Mediator\Article\YamlColleague']]
+#        - ['addSources', ['@App\Mediator\Article\DoctrineColleague']]
+
+    App\Mediator\Article\ArticleMediator:
+      calls:
+        - ['setSources', [!tagged app.article_source]]

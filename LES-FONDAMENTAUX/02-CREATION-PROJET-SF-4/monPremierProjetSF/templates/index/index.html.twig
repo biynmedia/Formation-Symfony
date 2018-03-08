@@ -12,6 +12,14 @@
 {% block content %}
 
 {#{{ dump(app.user) }}#}
+{{ dump(yamlArticles) }}
+
+{% for article in yamlArticles %}
+    {{ article.titre }} <br>
+    {{ article.categorie.libelle }} <br>
+    {{ article.auteur.prenom ~ ' ' ~ article.auteur.nom }}
+    <hr>
+{% endfor %}
 
 <div class="row">
     <!--colleft-->

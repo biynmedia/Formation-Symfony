@@ -100,3 +100,51 @@ data:
       prenomauteur : 'Hugo'
       nomauteur : 'LIEGEARD'
       emailauteur : 'wf3@hl-media.fr'
+  article7 :
+    idarticle : 7
+    titrearticle : 'New test article title !'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '6.jpg'
+    specialarticle : false
+    spotlightarticle : true
+    datecreationarticle : 2017-02-26 11:19:18
+    categorie :
+      idcategorie : 2
+      libellecategorie : 'Business'
+    auteur :
+      idauteur : 1
+      prenomauteur : 'Hugo'
+      nomauteur : 'LIEGEARD'
+      emailauteur : 'wf3@hl-media.fr'
+  article8 :
+    idarticle : 8
+    titrearticle : 'AWESOME 8 ARTICLE !'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '6.jpg'
+    specialarticle : false
+    spotlightarticle : true
+    datecreationarticle : 2017-02-26 11:19:18
+    categorie :
+      idcategorie : 2
+      libellecategorie : 'Business'
+    auteur :
+      idauteur : 1
+      prenomauteur : 'Hugo'
+      nomauteur : 'LIEGEARD'
+      emailauteur : 'wf3@hl-media.fr'
+  article9 :
+    idarticle : 15
+    titrearticle : 'AWESOME 15 ARTICLE ALEXIS !'
+    contenuarticle    : '<p> <span class="dropcap ">N</span>ulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.</p><p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Pellentesque in ipsum id orci porta dapibus.</p><div class="post-detail-img"><img alt="" src="http://localhost/POO/technews/public/images/product/4.jpg" /></div><p class="quote">Sed porttitor lectus nibh. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Sed porttitor lectus nibh. Pellentesque in ipsum id orci porta dapibus.</p>'
+    featuredimagearticle : '6.jpg'
+    specialarticle : false
+    spotlightarticle : true
+    datecreationarticle : 2017-02-26 11:19:18
+    categorie :
+      idcategorie : 2
+      libellecategorie : 'Business'
+    auteur :
+      idauteur : 1
+      prenomauteur : 'Hugo'
+      nomauteur : 'LIEGEARD'
+      emailauteur : 'wf3@hl-media.fr'

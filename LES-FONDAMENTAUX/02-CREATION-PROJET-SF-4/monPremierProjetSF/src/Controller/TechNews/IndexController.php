@@ -5,6 +5,8 @@ namespace App\Controller\TechNews;
 
 use App\Entity\Article;
 use App\Entity\Categorie;
+use App\Exception\DuplicateColleagueDataException;
+use App\Mediator\Article\ArticleMediator;
 use App\Service\Article\YamlProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,12 +19,16 @@ class IndexController extends Controller
      * Page d'accueil de notre site
      * Configuration de notre route grâce dans routes.yaml
      * @param YamlProvider $articleProvider
+     * @param ArticleMediator $articleMediator
      * @return Response
      */
-    public function index(YamlProvider $articleProvider) {
+    public function index(YamlProvider $articleProvider, ArticleMediator $articleMediator) {
 
         # Récupération des Articles depuis ArticleProvider
-        # $articles = $articleProvider->getArticles();
+        #$yamlArticles = $articleProvider->getArticles();
+        $yamlArticles = $articleMediator->find(15);
+//        $yamlArticles = $articleMediator->findAll();
+        #$yamlArticles = $articleMediator->findLastFiveArticles();
 
         # Récupération des articles depuis la BDD
         $articles = $this->getDoctrine()->getRepository(Article::class)
@@ -35,6 +41,7 @@ class IndexController extends Controller
         # Transmission à la vue
         return $this->render('index/index.html.twig', [
             'articles' => $articles,
+            'yamlArticles' => $yamlArticles,
             'spotlight' => $spotlight
         ]);
     }
@@ -68,12 +75,19 @@ class IndexController extends Controller
      * @see https://symfony.com/doc/current/routing.html#adding-wildcard-requirements
      * @Route("/{libellecategorie}/{slugarticle}_{id}.html", name="index_article",
      *     requirements={"idarticle"="\d+"} )
-     * @param Article $article
+     * @param $id
+     * @param ArticleMediator $mediator
      * @return Response
      */
-    public function article(Article $article) {
+    public function article($id, ArticleMediator $mediator) {
         # https://symfony.com/doc/current/doctrine.html#automatically-fetching-objects-paramconverter
         # index.php/business/une-formation-symfony-a-paris_2.html
+
+        try{
+            $article = $mediator->find($id);
+        } catch (DuplicateColleagueDataException $e) {
+
+        }
 
         # Récupération avec Doctrine
         # $article = $this->getDoctrine()
@@ -81,14 +95,14 @@ class IndexController extends Controller
         #     ->find($idarticle);
 
         # Si aucun article n'est trouvé...
-        if (!$article) {
+        #if (!$article) {
             # On génère une exception
             # throw $this->createNotFoundException(
             #     'Nous n\'avons pas trouvé votre article ID : '.$idarticle
             # );
             # Ou on peut aussi rediriger l'utilisateur sur la page index.
-            return $this->redirectToRoute('index',[],Response::HTTP_MOVED_PERMANENTLY);
-        }
+        #    return $this->redirectToRoute('index',[],Response::HTTP_MOVED_PERMANENTLY);
+        #}
 
         # Récupération des suggestions
         $suggestions = $this->getDoctrine()
@@ -111,13 +125,13 @@ class IndexController extends Controller
         ]);
     }
 
-    public function sidebar() {
+    public function sidebar(ArticleMediator $mediator) {
 
         # Récupération du Répository
         $repository = $this->getDoctrine()->getRepository(Article::class);
 
         # Récupération des 5 derniers articles
-        $articles   = $repository->findLastFiveArticle();
+        $articles   = $mediator->findLastFiveArticles();
 
         # Récupération des articles à la position "special"
         $special    = $repository->findSpecialArticles();

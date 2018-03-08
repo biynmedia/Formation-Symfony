@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "121aa61cabbbe55f35c03e9df13bb12a",
+    "content-hash": "cac95467d66048da96622ab57a4649e0",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3390,16 +3390,16 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "v3.1.2",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "2b41b8b6d2c6edb1a5494f02f8e4129be2a44784"
+                "reference": "8781649349fe418d51d194f8c9d212c0b97c40dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/2b41b8b6d2c6edb1a5494f02f8e4129be2a44784",
-                "reference": "2b41b8b6d2c6edb1a5494f02f8e4129be2a44784",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/8781649349fe418d51d194f8c9d212c0b97c40dd",
+                "reference": "8781649349fe418d51d194f8c9d212c0b97c40dd",
                 "shasum": ""
             },
             "require": {
@@ -3449,7 +3449,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-11-06T16:02:17+00:00"
+            "time": "2018-03-05T14:51:36+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -4457,16 +4457,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.4.4",
+            "version": "v3.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "10b32cf0eae28b9b39fe26c456c42b19854c4b84"
+                "reference": "80e19eaf12cbb546ac40384e5c55c36306823e57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/10b32cf0eae28b9b39fe26c456c42b19854c4b84",
-                "reference": "10b32cf0eae28b9b39fe26c456c42b19854c4b84",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/80e19eaf12cbb546ac40384e5c55c36306823e57",
+                "reference": "80e19eaf12cbb546ac40384e5c55c36306823e57",
                 "shasum": ""
             },
             "require": {
@@ -4521,7 +4521,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-18T22:16:57+00:00"
+            "time": "2018-02-22T06:28:18+00:00"
         },
         {
             "name": "symfony/twig-bridge",
