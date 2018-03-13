@@ -1,6 +1,8 @@
 index:
-    path: /
-    defaults: { _controller: 'App\Controller\TechNews\IndexController::index' }
+    path: /{_locale}
+    defaults: { _controller: 'App\Controller\TechNews\IndexController::index', _locale: 'fr' }
+    requirements:
+        _locale: en|fr
 
 # Utilisation du RedirectController
 # https://symfony.com/doc/current/routing/redirect_in_config.html#redirecting-using-a-route

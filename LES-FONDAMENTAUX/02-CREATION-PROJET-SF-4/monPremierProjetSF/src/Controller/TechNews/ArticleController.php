@@ -86,7 +86,7 @@ class ArticleController extends Controller
         $article->setAuteur($auteur);
 
         # Créer un Formulaire permettant l'ajout d'un Article
-        $form = $this->createForm(ArticleType::class);
+        $form = $this->createForm(ArticleType::class, $article);
             /**
              * Maintenant que tous les champs ont été créés, nous allons
              * pouvoir récupérer le formulaire

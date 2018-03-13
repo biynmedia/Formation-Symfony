@@ -64,11 +64,11 @@ class ArticleMediator implements ArticleMediatorInterface
 
 //        dump($articles); die();
         # Throw error in dev mode... How to check symfony dev mode ?
-        if(count($articles) > 1) :
+        /*if(count($articles) > 1) :
             throw new DuplicateColleagueDataException(sprintf(
                 'Return value of %s cannot return more than one record on line %s', get_class($this).'::'.__FUNCTION__.'()', __LINE__
             ));
-        endif;
+        endif;*/
 
         # Retourne l'article de la dernière source
         return array_pop($articles);
@@ -81,5 +81,10 @@ class ArticleMediator implements ArticleMediatorInterface
     public function findLastFiveArticles(): iterable
     {
         return array_reverse($this->iterateOverSources('findLastFiveArticles')->slice(-5));
+    }
+
+    public function count(): int
+    {
+        return count($this->sources);
     }
 }

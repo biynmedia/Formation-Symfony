@@ -88,8 +88,4 @@ class Categorie
         $this->articles = $articles;
     }
 
-
-
-
-
 }

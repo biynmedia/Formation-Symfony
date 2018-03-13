@@ -1,10 +1,11 @@
+{% trans_default_domain 'nav' %}
 <!--menu mobile-->
 <nav class="menu-res hidden-lg hidden-md ">
     <div class="menu-res-inner">
         <ul>
             <li {% if(active == 'index') %}class="current"{%endif%}>
                 <a href="{{ url('index') }}">
-                    Accueil
+                    {{ 'nav.home' | trans }}
                 </a>
             </li>
             {% for categorie in categories %}
@@ -13,10 +14,10 @@
                 </li>
             {% endfor %}
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <li><a href="{{ url('deconnexion') }}">Déconnexion</a></li>
+                <li><a href="{{ url('deconnexion') }}">{{ 'nav.logout' | trans }}</a></li>
             {% else %}
-                <li><a href="{{ url('security_connexion') }}">Connexion</a></li>
-                <li><a href="{{ url('security_inscription') }}">Inscription</a></li>
+                <li><a href="{{ url('security_connexion') }}">{{ 'nav.login' | trans }}</a></li>
+                <li><a href="{{ url('security_inscription') }}">{{ 'nav.register' | trans }}</a></li>
             {% endif %}
         </ul>
     </div>
@@ -42,17 +43,17 @@
             <ul class="hidden-sm hidden-xs">
                 <li {% if(active == 'index') %}class="current"{%endif%}>
                     <a href="{{ url('index') }}">
-                        Accueil
+                        {{ 'nav.home' | trans }}
                     </a>
                 </li>
                 {% for categorie in categories %}
                     <li {% if(active == categorie.libelle) %}class="current"{%endif%}><a href="{{ url('index_categorie', { 'libellecategorie' : categorie.libelle | slugify }) }}">{{ categorie.libelle }}</a></li>
                 {% endfor %}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <li><a href="{{ url('deconnexion') }}">Déconnexion</a></li>
+                    <li><a href="{{ url('deconnexion') }}">{{ 'nav.logout' | trans }}</a></li>
                 {% else %}
-                    <li><a href="{{ url('security_connexion') }}">Connexion</a></li>
-                    <li><a href="{{ url('security_inscription') }}">Inscription</a></li>
+                    <li><a href="{{ url('security_connexion') }}">{{ 'nav.login' | trans }}</a></li>
+                    <li><a href="{{ url('security_inscription') }}">{{ 'nav.register' | trans }}</a></li>
                 {% endif %}
             </ul>
             <div class="search-icon">
@@ -60,8 +61,8 @@
                     <i class="fa fa-search"></i>
                 </div>
                 <div class="search-box">
-                    <input type="text" placeholder="Rechercher..." />
-                    <button>Lancer</button>
+                    <input type="text" placeholder="{{ 'nav.search' | trans }}" />
+                    <button>{{ 'nav.start' | trans }}</button>
                 </div>
             </div>
         </nav>

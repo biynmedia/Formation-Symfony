@@ -104,4 +104,9 @@ class YamlColleague extends ArticleAbstractColleague
 
         return $articles;
     }
+
+    public function count(): int
+    {
+        return count($this->articles);
+    }
 }

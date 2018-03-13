@@ -1,7 +1,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: 'en'
+    locale: 'fr'
     articles_assets_directory: '%kernel.project_dir%/public/images/product'
 
 services:
@@ -50,3 +50,25 @@ services:
     App\Mediator\Article\ArticleMediator:
       calls:
         - ['setSources', [!tagged app.article_source]]
+
+
+    App\DataCollector\SourceCollector:
+        tags:
+            -
+                name:     data_collector
+                template: 'collector/catalogue.html.twig'
+                # must match the value returned by the getName() method
+                id:       'app.source_collector'
+                # optional priority
+                # priority: 300
+        public: false
+
+#    App\DataCollector\SourceCollector:
+#      tags:
+#        - { name: data_collector, id: '@App\DataCollector\SourceCollector', template: 'collector/sourcecollector.html.twig' }
+#      public: false
+
+#    app.source_collector:
+#      class: App\DataCollector\SourceCollector
+#      tags:
+#        - { name: app.source_collector, template: "@WebProfiler/Collector/cache.html.twig", id: "app.source_collector" }

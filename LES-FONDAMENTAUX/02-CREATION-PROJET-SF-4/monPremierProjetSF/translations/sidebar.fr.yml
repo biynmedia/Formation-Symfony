@@ -1,0 +1,10 @@
+bar.hi: Bonjour
+bar.create.article: Créer un article
+bar.last.publications: Dernières publications
+bar.newsletter:
+                titre: Infos Lettre
+                intro: Inscrivez-vous pour recevoir nos dernières publications.
+                placeholder: Email...
+                btn: Je minscris !
+bar.social.followus: Suivez-nous
+bar.articles.special: En avant

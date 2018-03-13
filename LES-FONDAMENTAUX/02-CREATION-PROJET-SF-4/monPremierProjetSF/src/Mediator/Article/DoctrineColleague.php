@@ -47,4 +47,11 @@ class DoctrineColleague extends ArticleAbstractColleague
             ->getRepository($this->entity)
             ->findLastFiveArticle();
     }
+
+    public function count(): int
+    {
+        return $this->em
+            ->getRepository($this->entity)
+            ->findArticlesNumber();
+    }
 }

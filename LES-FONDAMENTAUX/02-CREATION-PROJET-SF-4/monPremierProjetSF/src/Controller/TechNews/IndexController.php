@@ -48,7 +48,7 @@ class IndexController extends Controller
 
     /**
      * Page permettant d'afficher les articles d'une catégorie
-     * @Route("/categorie/{libellecategorie}",
+     * @Route("/{_locale}/categorie/{libellecategorie}",
      *     name="index_categorie",
      *     methods={"GET"},
      *     requirements={"libellecategorie"="\w+"})
@@ -73,7 +73,7 @@ class IndexController extends Controller
     /**
      * Page permettant d'afficher un article
      * @see https://symfony.com/doc/current/routing.html#adding-wildcard-requirements
-     * @Route("/{libellecategorie}/{slugarticle}_{id}.html", name="index_article",
+     * @Route("/{_locale}/{libellecategorie}/{slugarticle}_{id}.html", name="index_article",
      *     requirements={"idarticle"="\d+"} )
      * @param $id
      * @param ArticleMediator $mediator

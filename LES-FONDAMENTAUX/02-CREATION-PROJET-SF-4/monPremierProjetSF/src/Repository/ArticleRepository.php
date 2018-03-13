@@ -51,4 +51,13 @@ class ArticleRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findArticlesNumber()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('COUNT(a)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
 }
