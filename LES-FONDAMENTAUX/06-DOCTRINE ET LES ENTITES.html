@@ -21,8 +21,7 @@
 <p>Source : <a href="https://openclassrooms.com/courses/utilisation-d-un-orm-les-bases-de-doctrine">https://openclassrooms.com/courses/utilisation-d-un-orm-les-bases-de-doctrine</a></p>
 </blockquote>
 <h2 id="présentation-de-doctrine">Présentation de Doctrine</h2>
-<p>Doctrine est, comme vous devez maintenant vous douter, l’un des ORM les plus connus qui existent actuellement.<br>
-Il est utilisé dans des frameworks très connus (Symfony, Zend Framework), et est aussi simple à prendre en main que puissant.</p>
+<p>Doctrine est, comme vous devez maintenant vous douter, l’un des ORM les plus connus qui existent actuellement. Il est utilisé dans des frameworks très connus (Symfony, Zend Framework), et est aussi simple à prendre en main que puissant.</p>
 <blockquote>
 <p>Source : <a href="https://openclassrooms.com/courses/utilisation-d-un-orm-les-bases-de-doctrine">https://openclassrooms.com/courses/utilisation-d-un-orm-les-bases-de-doctrine</a></p>
 </blockquote>
@@ -48,11 +47,13 @@ DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name"
 <p>N’oubliez pas de créer votre base de données dans PhpMyAdmin…<br>
 Ou via la console : <em>php bin/console doctrine:database:create</em></p>
 </blockquote>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/doctrine_create.png?raw=true" alt="enter image description here"></p>
 <p><strong>Nous allons vérifier si notre configuration est correct :</strong></p>
 <pre><code>php bin/console doctrine:schema:validate
 [Mapping]  OK - The mapping files are correct.
 [Database] OK - The database schema is in sync with the mapping files.
 </code></pre>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/doctrine_schema.png?raw=true" alt="enter image description here"></p>
 <p><strong>Nous pouvons maintenant créer notre base de données avec Doctrine !</strong></p>
 <h2 id="utilisation-de-doctrine">Utilisation de Doctrine</h2>
 <p>Pour notre projet nous auront besoin de mettre en place une classe pour les Articles, les Auteurs et les Catégories. De la même façon nous auront dans notre base de donnée les tables :</p>
@@ -65,6 +66,7 @@ Ou via la console : <em>php bin/console doctrine:database:create</em></p>
 <p>NOTA BENE : Symfony via Doctrine se chargera de la création et des updates de notre base de données. De notre côté nous travaillerons uniquement avec nos entités !</p>
 </blockquote>
 <p><strong>Demandons à Symfony de créer pour nous les Entités (class) Catégorie, Article et Auteur :</strong></p>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/doctrine_make.png?raw=true" alt=""></p>
 <pre><code>php bin/console make:entity Categorie
 created: src/Entity/Categorie.php
 created: src/Repository/CategorieRepository.php
@@ -77,6 +79,7 @@ php bin/console make:entity Auteur
 created: src/Entity/Auteur.php
 created: src/Repository/AuteurRepository.php
 </code></pre>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/doctrine_autoadded.png?raw=true" alt="enter image description here"></p>
 <blockquote>
 <p>Doc de Référence :<br>
 <a href="https://symfony.com/doc/current/doctrine.html#mapping-more-fields-columns">https://symfony.com/doc/current/doctrine.html#mapping-more-fields-columns</a></p>
@@ -180,6 +183,7 @@ public function __construct() {
 [Mapping]  OK - The mapping files are correct.
 [Database] FAIL - The database schema is not in sync with the current mapping file.
 </code></pre>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/doctrine_validate.png?raw=true" alt="enter image description here"></p>
 <p>Le FAIL est normal, nous n’avons pas encore sauvegarder nos modifications en BDD.<br>
 En option :</p>
 <pre><code>php bin/console doctrine:mapping:info
@@ -188,6 +192,7 @@ Found 3 mapped entities:
 [OK]   App\Entity\Auteur
 [OK]   App\Entity\Categorie
 </code></pre>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/doctrine_mapping_info.png?raw=true" alt="enter image description here"></p>
 <p>Nous allons ensuite demandé a Doctrine, via Symfony de créer nos tables. Dans la console :</p>
 <pre><code>php bin/console doctrine:migrations:diff
 </code></pre>
@@ -195,10 +200,12 @@ Found 3 mapped entities:
 <blockquote>
 <p>Regardez dans le dossier <strong>src/Migrations</strong></p>
 </blockquote>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/doctrine_migration_version.png?raw=true" alt="enter image description here"></p>
 <p>Enfin pour exécuter les requètes :</p>
 <pre><code>php bin/console doctrine:migrations:migrate
 </code></pre>
 <p>Maintenant, vous pouvez jeter un oeil dans votre BDD, vous allez voir que Doctrine à générer absolument tous pour vous ! Tables, Colonnes, Contraintes, …</p>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/doctrine_migration_version_database.png?raw=true" alt="enter image description here"></p>
 <h3 id="ajouter-des-données-exemple">Ajouter des données (Exemple)</h3>
 <blockquote>
 <p>Doc de Référence :<br>
@@ -318,7 +325,8 @@ $suggestions = $this-&gt;getDoctrine()
 <li>Les articles d’une catégorie ;</li>
 <li>L’ Affichage d’un article et des suggestions.</li>
 </ul>
-<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.<br>
+Screenshots 📸 by <a href="https://tool.frogg.fr/">Frogg’s web tools</a>.</p>
 </div>
 </body>
 

@@ -54,6 +54,7 @@ php bin/console debug:router</p>
 <li>Que pouvez-nous constater ?</li>
 <li>D’où proviennent les routes complémentaires ? A quoi servent-elles ?</li>
 </ul>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/symfony_debug_console_dev.png?raw=true" alt="enter image description here"></p>
 <h2 id="les-annotations">Les Annotations</h2>
 <p>Dans symfony, pour plus de facilité, nous pouvons écrire nos routes avec des annotations.</p>
 <blockquote>
@@ -80,6 +81,7 @@ php bin/console debug:router</p>
 <p>Nous pouvons ensuite tester dans notre console, la détection de nos routes par Symfony :</p>
 <pre><code>php bin/console router:match /categorie/business
 </code></pre>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/symfony_debug_console_route.png?raw=true" alt="enter image description here"></p>
 <h3 id="en-plus---les-contrôleurs-notable">En plus :  Les contrôleurs notable</h3>
 <p>Testons les deux contrôleurs suivants :</p>
 <h4 id="redirectcontroller">RedirectController</h4>
@@ -106,7 +108,10 @@ php bin/console debug:router</p>
     defaults:
         template: static/mentionslegales.html.twig
 </code></pre>
-<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+<h3 id="le-parcours-dune-requète">Le parcours d’une requète</h3>
+<p><img src="https://github.com/biynmedia/Formation-Symfony/blob/master/LES-FONDAMENTAUX/captures/request-flow.png?raw=true" alt="enter image description here"></p>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.<br>
+Screenshots 📸 by <a href="https://tool.frogg.fr/">Frogg’s web tools</a>.</p>
 </div>
 </body>
 

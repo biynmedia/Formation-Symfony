@@ -1,0 +1,469 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09-AUTHENTIFICATION ET AUTORISATION DANS SF4</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="sécurité--symfony-4">Sécurité | Symfony 4</h1>
+<p>Nous allons aborder la question de l’authentification et de l’autorisation dans symfony.</p>
+<blockquote>
+<p>Doc de référence :<br>
+<a href="https://symfony.com/doc/current/security.html">https://symfony.com/doc/current/security.html</a><br>
+<a href="https://symfony.com/doc/current/security/entity_provider.html">https://symfony.com/doc/current/security/entity_provider.html</a></p>
+</blockquote>
+<h2 id="préambule">Préambule</h2>
+<p>Afin de pouvoir mettre en place l’inscription, la connexion et la gestion des droits de nos utilisateurs, nous allons utiliser le composant sécurité de symfony  :</p>
+<pre><code>composer require symfony/security-bundle
+</code></pre>
+<blockquote>
+<p>Jetez un coup d’oeil à la recette : <a href="https://github.com/symfony/recipes/tree/master/symfony/security-bundle">https://github.com/symfony/recipes/tree/master/symfony/security-bundle</a></p>
+</blockquote>
+<p>Vous devriez maintenant avoir un fichier :<br>
+config / packages / <strong>security.yaml</strong></p>
+<h2 id="inscription-dun-utilisateur">Inscription d’un Utilisateur</h2>
+<p>Voyons comment mettre en place l’inscription d’un Auteur</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/doctrine/registration_form.html">https://symfony.com/doc/current/doctrine/registration_form.html</a></p>
+</blockquote>
+<h3 id="création-du-formulaire-dinscription">Création du Formulaire d’inscription</h3>
+<p>Créons un AuteurType : <strong>src/Form/AuteurType.php</strong><br>
+Nous aurons besoin des champs suivants :</p>
+<ol>
+<li>Prénom : <em>prenom</em></li>
+<li>Nom : <em>nom</em></li>
+<li>Email : <em>email</em></li>
+<li>Mot de passe : <em>password</em></li>
+<li>Submit : <em>submit</em></li>
+</ol>
+<blockquote>
+<p>N’oubliez pas de faire le override de <strong>configureOptions</strong> pour associer au formulaire l’entité Auteur.</p>
+</blockquote>
+<h3 id="affichage-du-formulaire">Affichage du Formulaire</h3>
+<p>Nous avons ensuite besoin d’un contrôleur pour gérer l’affichage et la soumission du formulaire. Une fois le formulaire soumis et validé, le contrôleur se chargera de sauvegarder l’auteur en base de données.</p>
+<p><strong>Le SecurityController :</strong> Nous allons mettre en place un contrôleur qui sera chargé de l’inscription mais aussi la connexion de nos utilisateurs.</p>
+<p>Créons un SecurityController: <strong>src/Controller/Security/SecurityController.php</strong></p>
+<p>Mettons en place notre <strong>action inscription</strong> :</p>
+<pre><code>/**  
+ * Inscription d'un utilisateur
+ * @Route("/inscription", name="security_inscription", methods={"GET", "POST"})  
+ */
+ public function inscription() {...}
+</code></pre>
+<p>La première chose que nous ferons sera d’attribuer un <strong>ROLE</strong> à notre Auteur. Rappelez-vous, dans notre <strong>Entité Auteur</strong>, nous avions créé une propriété <strong>$roles</strong>.</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/security.html#roles">https://symfony.com/doc/current/security.html#roles</a></p>
+</blockquote>
+<p>Le système d’autorisation de symfony nous permet d’attribuer à chaque utilisateur un ou plusieurs ‘ROLE’ . Ces rôles ensuite nous permettent d’autoriser notre membre à tel ou tel endroit de notre application.</p>
+<blockquote>
+<p><strong>IMPORTANT :</strong> Nous pouvons créer les rôles que nous voulons, cependant ils doivent <strong>OBLIGATOIREMENT</strong> commencer par <strong>ROLE_</strong></p>
+</blockquote>
+<p>Nous pouvons également définir une hiérarchie entre les rôles, nous le verront plus loin.<br>
+Pour le moment nous allons donner à notre Auteur un rôle de simple MEMBRE.</p>
+<pre><code># Création d'un nouvel auteur  
+$auteur = new Auteur();  
+$auteur-&gt;setRoles('ROLE_MEMBRE');  
+</code></pre>
+<blockquote>
+<p>Sachant qu’un utilisateur peux avoir plusieurs rôles, nous devons modifier la fonction setRoles pour prendre en compte cette contrainte :</p>
+</blockquote>
+<pre><code>public function setRoles($roles)  
+{  
+  $this-&gt;roles[] = $roles;  
+}
+</code></pre>
+<p>Ensuite, nous allons créer notre formulaire sur la base de notre Auteur :</p>
+<pre><code># Créer un Formulaire permettant l'ajout d'un Auteur  
+$form = $this-&gt;createForm(AuteurType::class, $auteur);
+</code></pre>
+<p>Et passer le tout à la vue :</p>
+<pre><code># Affichage du Formulaire dans la Vue  
+return $this-&gt;render('security/inscription.html.twig', [  
+  'form' =&gt; $form-&gt;createView()  
+]);
+</code></pre>
+<p>Créons la vue permettant le rendu de notre formulaire d’inscription : <strong>security/inscription.html.twig</strong></p>
+<pre><code>{% extends "layout.html.twig" %}  
+{% set active = 'inscription' %}  
+{% block page_title %} Inscription {% endblock %}  
+  
+{% block content %}  
+    &lt;div class="row"&gt;  
+		&lt;div class="col-xs-6 col-xs-push-3"&gt;  
+		     &lt;h2 class="text-center"&gt;Inscription d'un Membre&lt;/h2&gt;  
+		     {% form_theme form 'bootstrap_3_layout.html.twig' %}  
+             {{ form(form) }}  
+        &lt;/div&gt;  
+     &lt;/div&gt;  
+{% endblock %}
+</code></pre>
+<h3 id="traitement-du-formulaire-insertion-en-bdd">Traitement du Formulaire <em>(Insertion en BDD)</em></h3>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/doctrine/registration_form.html#handling-the-form-submission">https://symfony.com/doc/current/doctrine/registration_form.html#handling-the-form-submission</a></p>
+</blockquote>
+<p>Retournons dans <strong>SecurityController::inscription</strong></p>
+<p>Si le formulaire est soumis et que les données sont valides…</p>
+<pre><code># Traitement des données POST  
+$form-&gt;handleRequest($request);  
+  
+# Vérification des données du Formulaire  
+if ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {...}
+</code></pre>
+<blockquote>
+<p><em>N’oubliez pas de passer l’objet Request</em></p>
+</blockquote>
+<pre><code> public function inscription(Request $request) {...}
+</code></pre>
+<p>…il nous faut avant de persister notre nouvel Auteur encoder le mot de passe.</p>
+<pre><code># config/packages/security.yaml
+security:  
+    encoders: 
+	    App\Entity\Auteur: bcrypt
+</code></pre>
+<p>Ici, nous précisons que l’encoder <strong>bcrypt</strong> sera utilisé pour notre entité <strong>Auteur</strong>.</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password">https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password</a><br>
+<a href="https://symfony.com/doc/current/reference/configuration/security.html#using-the-bcrypt-password-encoder">https://symfony.com/doc/current/reference/configuration/security.html#using-the-bcrypt-password-encoder</a></p>
+</blockquote>
+<p>L’algorithme bcrypt est recommandé pour encoder les mots de passe de vos utilisateurs.</p>
+<p>On injecte à notre fonction <code>inscription()</code> l’encoder : <code>UserPasswordEncoderInterface $passwordEncoder</code><br>
+Ce qui donne :</p>
+<pre><code>public function inscription(Request $request, UserPasswordEncoderInterface $passwordEncoder) {...}
+</code></pre>
+<p>Il ne reste plus qu’a encoder le mot de passe :</p>
+<pre><code># Gestion du mot de passe  
+$password = $passwordEncoder-&gt;encodePassword($auteur, $auteur-&gt;getPassword());  
+$auteur-&gt;setPassword($password);
+</code></pre>
+<p>Et persister le nouvel auteur :</p>
+<pre><code># Insertion en BDD  
+$em = $this-&gt;getDoctrine()-&gt;getManager();  
+$em-&gt;persist($auteur);  
+$em-&gt;flush();
+</code></pre>
+<p>Si tout se passe bien, je fait une redirection sur la page de connexion :</p>
+<pre><code># Redirection sur la page connexion  
+return $this-&gt;redirect('connexion?inscription=success');
+</code></pre>
+<blockquote>
+<p>Notez le paramètre get : ?inscription=success<br>
+Vous pouvez également passer par <code>redirectToRoute</code></p>
+</blockquote>
+<h3 id="unique-entity">Unique Entity</h3>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/reference/constraints/UniqueEntity.html">https://symfony.com/doc/current/reference/constraints/UniqueEntity.html</a></p>
+</blockquote>
+<p>S’agissant de l’inscription d’un utilisateur, nous devons nous assurer qu’un utilisateur ne puisse pas s’inscrire deux fois. Dans notre exemple, la contrainte d’unicité se situe sur l’adresse email, cela aurait pu être un pseudo également…</p>
+<p>Plutôt que de créer dans SecurityController::inscription une fonction qui vérifierai si un utilisateur existe déjà, nous pouvons laisser Doctrine faire le travail à notre place ; et rajouter à notre Entité Auteur une annotation :</p>
+<pre><code>/**  
+ * @ORM\Entity(repositoryClass="App\Repository\AuteurRepository")  
+ * @UniqueEntity(fields={"email"}, errorPath="email", message="Ce compte existe déjà !")  
+ */  
+class Auteur {...}
+</code></pre>
+<p>De cette façon, si un utilisateur déjà inscrit avec son adresse email se présente, il sera redirigé vers une page d’erreur.</p>
+<h2 id="connexion-dun-utilisateur">Connexion d’un Utilisateur</h2>
+<p>La connexion d’un utilisateur se fait de façon automatique. C’est symfony qui se charge d’authentifier l’utilisateur et donc de vérifier sa combinaison email / password.</p>
+<p>Cependant, pour que cela puisse fonctionner, il faut indiquer à symfony un certains nombres de paramètres :</p>
+<ul>
+<li>Quel est l’identifiant de connexion ?</li>
+<li>Comment récupérer le mot de passe ?</li>
+<li>Quels sont les rôles de l’utilisateur ?</li>
+</ul>
+<h3 id="configuration-de-notre-entité-auteur">Configuration de notre Entité Auteur</h3>
+<p>Pour cela, notre Entité Auteur doit implémenter : <strong>UserInterface</strong></p>
+<blockquote>
+<p>Doc de Référence : <a href="http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserInterface.html">http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserInterface.html</a></p>
+</blockquote>
+<p>Ce qui donne :</p>
+<pre><code>class Auteur implements UserInterface
+</code></pre>
+<p><strong>Cette interface défini plusieurs fonctions notamment :</strong></p>
+<p>public function <strong>getPassword()</strong> :  Le mot de passe utilisé pour authentifier l’utilisateur.</p>
+<pre><code>public function getPassword()  
+{  
+  return $this-&gt;password;  
+}
+</code></pre>
+<p>public function <strong>getUsername()</strong> : Le username utilisé pour authentifier l’utilisateur.<br>
+<em>(Dans notre cas l’adresse email)</em></p>
+<pre><code>public function getUsername()  
+{  
+  return $this-&gt;getEmail();  
+}
+</code></pre>
+<p>public function <strong>getRoles()</strong> : Les droits de l’utilisateur. <em>(Symfony se charge de la serialisation pour nous)</em></p>
+<pre><code>public function getRoles()  
+{  
+  return $this-&gt;roles;  
+}
+</code></pre>
+<h3 id="création-du-contrôleur-et-de-la-vue-connexion">Création du Contrôleur et de la Vue Connexion</h3>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/security/form_login_setup.html">https://symfony.com/doc/current/security/form_login_setup.html</a></p>
+</blockquote>
+<p><strong>Nous devons maintenant faire deux choses :</strong></p>
+<ol>
+<li>Mettre en Place l’Action ‘connexion’</li>
+<li>Créer la vue permettant le rendu de notre formulaire de connexion : <strong>security/connexion.html.twig</strong></li>
+</ol>
+<p>La mise en place de l’action connexion est simple et déjà fournie dans la documentation de symfony :</p>
+<pre><code>/**  
+ * Connexion d'un utilisateur 
+ * @Route("/connexion", name="security_connexion")  
+ */
+ public function connexion(Request $request, AuthenticationUtils $authenticationUtils)  
+{  
+  # Récupération du message d'erreur s'il y en a un.  
+  $error = $authenticationUtils-&gt;getLastAuthenticationError();  
+  
+  # Dernier email saisie par l'utilisateur.
+  $lastEmail = $authenticationUtils-&gt;getLastUsername();  
+  
+  # Affichage du Formulaire
+  return $this-&gt;render('security/connexion.html.twig', array(  
+      'last_email' =&gt; $lastEmail,  
+      'error' =&gt; $error,  
+  ));  
+}
+</code></pre>
+<blockquote>
+<p>Remarquez bien ici que notre code ne comporte aucune logique d’authentification, c’est en effet <strong>symfony qui s’occupe de capturer la requête</strong> et faire les vérifications nécessaire. Si l’authentification username / password échoue, alors, notre contrôleur récupère l’erreur via <code>AuthenticationUtils</code>. Erreur, que nous pouvons transmettre à l’utilisateur.</p>
+</blockquote>
+<p>Pour la vue maintenant, votre formulaire de connexion doit avoir un formatage particulier. <em>Par exemple pour le champ email :</em></p>
+<pre><code>&lt;input name="_username"  
+  value="{{ last_email }}"  
+  class="form-control" required type="email"  
+  placeholder="Saisissez votre Email"&gt;
+</code></pre>
+<blockquote>
+<p>Notez le <code>_username</code> et <code>{{ last_email }}</code></p>
+</blockquote>
+<p>Pour le champ password  :</p>
+<pre><code>&lt;input name="_password"  
+  class="form-control" required type="password"  
+  placeholder="*******"&gt;
+</code></pre>
+<blockquote>
+<p>Notez le <code>_password</code></p>
+</blockquote>
+<h3 id="en-plus-">En plus :</h3>
+<p>Pour faire une redirection après la connexion vers notre page d’accueil, nous pouvons rajouter le champ caché suivant au formulaire de connexion :</p>
+<pre><code>&lt;input type="hidden" name="_target_path" value="/accueil" /&gt;
+</code></pre>
+<p>Pour afficher les erreurs à l’utilisateur, on affiche la variable “error” passée à la vue précédemment :</p>
+<pre><code>{% if error %}  
+    &lt;div class="alert alert-danger"&gt;  
+		&lt;i class="fa fa-exclamation-triangle" aria-hidden="true"&gt;&lt;/i&gt;  
+	    {{ error.messageKey|trans(error.messageData, 'security')| replace({"Invalid credentials." : "Identifiant et/ou mot de passe incorrect."}) }} 
+    &lt;/div&gt;  
+{% endif %}
+</code></pre>
+<p>Pour afficher un message de confirmation suite à son inscription :</p>
+<pre><code>{% if app.request.get('inscription') == 'success' %}  
+    &lt;div class="alert alert-success"&gt;
+	     &lt;p class="text-center"&gt;&lt;i class="fa fa-thumbs-up fa-2x" aria-hidden="true"&gt;&lt;/i&gt;&lt;/p&gt;  
+	     &lt;p class="text-center"&gt;Félicitation, votre inscription est effective.  
+         &lt;br&gt;Vous pouvez maintenant vous connecter.&lt;/p&gt;  
+     &lt;/div&gt;
+ {% endif %}
+</code></pre>
+<h3 id="point-davancement">Point d’avancement</h3>
+<p>Récapitulons, jusque là, nous avons mis en place l’inscription des Auteurs puis, mis à jour notre entité Auteur afin de permettre à Symfony de connaitre la combinaison username / password à utiliser pour l’authentification ; nous avons également mis en place la vue et l’action qui permettent d’afficher et traiter le formulaire de connexion.</p>
+<h3 id="route-de-connexion">Route de connexion</h3>
+<p>Maintenant, il nous faut indiquer à symfony quelle route est en charge de l’authentification du site.</p>
+<p>Dans <strong>config/packages/security.yaml</strong> nous allons rajouter un <strong>login_path</strong> et <strong>check_path</strong></p>
+<pre><code>main:
+    anonymous: true
+    form_login:
+	    login_path: security_connexion
+	    check_path: security_connexion
+</code></pre>
+<p>Explication :</p>
+<ul>
+<li><strong>login_path</strong> : Permet à symfony de connaitre notre route de connexion ;</li>
+<li><strong>check_path</strong> : Route généré par symfony pour vérifier nos informations de connexion à partir de notre route connexion.</li>
+</ul>
+<p>Ensuite, nous devons dire à symfony quelle entité et quelle propriété interroger pour authentifier les utilisateurs. <em>Autrement dit, quelle est notre table utilisateur et quelle est la colonne username.</em></p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/security/entity_provider.html#configure-security-to-load-from-your-entity">https://symfony.com/doc/current/security/entity_provider.html#configure-security-to-load-from-your-entity</a></p>
+</blockquote>
+<p>Nous allons d’abord créer un provider :</p>
+<pre><code>providers:  
+    ...
+    auteur_provider:  
+		entity: 
+			class: App\Entity\Auteur  
+            property: email
+</code></pre>
+<p>Il ne nous reste plus qu’à indiquer à notre firewall d’authentifier les utilisateurs via <strong>auteur_provider</strong></p>
+<blockquote>
+<p><em>Le nom du provider en lui même n’est pas important, ils doivent juste correspondre dans providers et firewalls…</em></p>
+</blockquote>
+<pre><code>firewalls:  
+... 
+    main:  
+		...
+        http_basic: ~  
+        provider: auteur_provider
+</code></pre>
+<p>A partir de maintenant, le pare-feu de symfony est capable d’intercepter notre requête de connexion, puis via auteur_provider authentifier notre utilisateur et vérifier son mot de passe grâce à la fonction getUsername et getPassword de UserInterface.</p>
+<h3 id="déconnexion">Déconnexion</h3>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/security.html#logging-out">https://symfony.com/doc/current/security.html#logging-out</a></p>
+</blockquote>
+<p>Pour la déconnexion, nous pouvons demander à symfony de s’en charger automatiquement. Toujours dans notre fichier <strong>security.yaml</strong> :</p>
+<pre><code>firewalls:  
+    ...
+    main:  
+        logout_on_user_change: true  
+        logout:
+            path: /deconnexion  
+            target: /
+</code></pre>
+<p>Puis dans routes.yaml :</p>
+<pre><code>...
+deconnexion:  
+    path: /deconnexion
+</code></pre>
+<h3 id="vérification">Vérification</h3>
+<p>Si vous avez suivi minutieusement toutes les étapes, vous devriez être en mesure de vous connecter.</p>
+<blockquote>
+<p><a href="http://localhost:8000/connexion">http://localhost:8000/connexion</a></p>
+</blockquote>
+<p>Lorsque vous êtes connecté, vous pouvez accéder depuis twig à votre utilisateur.<br>
+Dans <strong>templates / index / index.html.twig</strong> rajouter dans le block content la ligne :</p>
+<pre><code>{{ dump(app.user) }}
+</code></pre>
+<p><strong>Vous devriez voir les informations relatives à votre auteur !</strong></p>
+<h3 id="les-erreurs">Les Erreurs</h3>
+<p>Si vous avez une erreur du type :</p>
+<ul>
+<li>
+<p><strong>Invalid Credentials</strong> : Symfony n’a pas été en mesure de vous authentifier. Il faut vérifier premièrement votre utilisateur / mot de passe,  vous vous trompez surement… Si vous êtes sûr de votre combinaisons, vérifiez que votre fichier security.yaml est correct, et que votre entité Auteur ne contient pas d’erreur.</p>
+</li>
+<li>
+<p><strong>Missing 4th Argument</strong> :  Le 4 ème argument correspond au ROLE. Vérifiez que votre utilisateur à bien un ROLE, et que la fonction getRoles retourne bien un tableau de ROLE.</p>
+</li>
+</ul>
+<blockquote>
+<p>Toutes autres erreurs : <a href="http://www.google.fr">www.google.fr</a> ^^</p>
+</blockquote>
+<h3 id="en-plus">En Plus</h3>
+<p>Vous pouvez restreindre l’accès de certaines routes à certains utilisateurs grâce à leurs ROLES :</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate">https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate</a></p>
+</blockquote>
+<pre><code>access_control:  
+    # require ROLE_ADMIN for /admin
+	- { path: ^/admin, roles: ROLE_ADMIN }  
+	
+	# require ROLE_MEMBRE for /membre
+    - { path: ^/membre, roles: ROLE_MEMBRE }
+</code></pre>
+<p>Vous pouvez également mettre en place une hiérarchie de vos rôles :</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/security.html#hierarchical-roles">https://symfony.com/doc/current/security.html#hierarchical-roles</a></p>
+</blockquote>
+<pre><code>role_hierarchy:  
+    ROLE_AUTEUR: ROLE_MEMBRE  
+    ROLE_ADMIN: [ROLE_AUTEUR, ROLE_ALLOWED_TO_SWITCH]
+</code></pre>
+<p>Ainsi, les Auteurs auront les mêmes droits que les membres et les Admins que les Auteurs.</p>
+<blockquote>
+<p>Pour comprendre le ROLE_ALLOWED_TO_SWITCH : <a href="https://symfony.com/doc/current/security/impersonating_user.html">https://symfony.com/doc/current/security/impersonating_user.html</a></p>
+</blockquote>
+<p>La partie Authentification et Autorisation de Symfony n’est pas complexe, mais demande beaucoup de préparation. Pour vous simplifier la vie, vous avez des bundles à votre disposition qui gère automatiquement tout cela pour vous :</p>
+<ul>
+<li>Inscription</li>
+<li>Connexion</li>
+<li>Récupération de mot de passe</li>
+<li>Emailling</li>
+<li>…</li>
+</ul>
+<blockquote>
+<p>Voir FOSUserBundle : <a href="https://github.com/FriendsOfSymfony/FOSUserBundle">https://github.com/FriendsOfSymfony/FOSUserBundle</a></p>
+</blockquote>
+<p>Pour aller plus loin, et mettre en place une gestion de l’activation des utilisateurs :</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/security/entity_provider.html#forbid-inactive-users-advanceduserinterface">https://symfony.com/doc/current/security/entity_provider.html#forbid-inactive-users-advanceduserinterface</a></p>
+</blockquote>
+<h2 id="finalisation-du-thème">Finalisation du thème</h2>
+<p>Maintenant que nos Auteurs peuvent s’inscrire et se connecter, il serait bien de mettre en place sur notre site :</p>
+<ul>
+<li>Une navigation permettant la connexion et déconnexion ;</li>
+<li>La création d’un menu utilisateur dans la sidebar</li>
+<li>Autoriser uniquement les ROLE_AUTEUR à rédiger des Articles.</li>
+</ul>
+<h3 id="mise-à-jour-de-la-navigation">Mise à jour de la navigation</h3>
+<p>Avec le composant security de symfony installé, nous pouvons vérifier si un utilisateur est connecté dans notre template via la fonction :</p>
+<pre><code>is_granted('IS_AUTHENTICATED_FULLY')
+</code></pre>
+<p>Nous allons mettre en place un bouton de “connexion” et “inscription”. Lorsque l’utilisateur sera connecté un bouton de “déconnexion” à la place.<br>
+Dans notre fichier <strong>templates / components / _nav.html.twig :</strong></p>
+<pre><code>{% if is_granted('IS_AUTHENTICATED_FULLY') %}  
+    &lt;li&gt;&lt;a href="{{ url('deconnexion') }}"&gt;Déconnexion&lt;/a&gt;&lt;/li&gt;  
+{% else %}  
+    &lt;li&gt;&lt;a href="{{ url('security_connexion') }}"&gt;Connexion&lt;/a&gt;&lt;/li&gt;  
+    &lt;li&gt;&lt;a href="{{ url('security_inscription') }}"&gt;Inscription&lt;/a&gt;&lt;/li&gt;  
+{% endif %}
+</code></pre>
+<h3 id="mise-à-jour-de-la-sidebar">Mise à jour de la sidebar</h3>
+<p>Cette même fonction, nous permet de vérifier aussi le ROLE d’un utilisateur.<br>
+Par exemple :</p>
+<pre><code>is_granted('ROLE_ADMIN')
+</code></pre>
+<p>Nous allons mettre à jour notre sidebar pour souhaiter la bienvenue à un utilisateur quand il est connecté, lui afficher son rôle ainsi qu’une navigation spécifique selon ses rôles.</p>
+<pre><code>{% if is_granted('IS_AUTHENTICATED_FULLY') %}  
+     &lt;h3 class="text-center"&gt;Bonjour {{ app.user.prenom }}&lt;/h3&gt;  
+     &lt;h4 class="text-center"&gt;  
+	     {% if is_granted('ROLE_ADMIN') %}  
+                Administrateur  
+         {% elseif is_granted('ROLE_AUTEUR') %}  
+                Auteur  
+         {% else %}  
+                Membre  
+         {% endif %}  
+    &lt;/h4&gt;  
+    &lt;ul class="list-group"&gt;  
+	    {% if is_granted('ROLE_AUTEUR') %}  
+            &lt;li class="list-group-item"&gt;  
+			     &lt;a href="{{ url('article_add') }}"&gt;Créer un Article&lt;/a&gt;  
+		    &lt;/li&gt;
+		{% endif %}  
+        &lt;li class="list-group-item"&gt;  
+		    &lt;a href="{{ url('deconnexion') }}"&gt;Déconnexion&lt;/a&gt;  
+	    &lt;/li&gt;
+	&lt;/ul&gt;  
+{% endif %}
+</code></pre>
+<p>Ce menu ne s’affichera que lorsque l’utilisateur sera connecté. Lui affichera son prénom ainsi que son rôle. S’il est un Auteur il pourra créer un article !</p>
+<p>Cependant, nous n’avons toujours pas protégé la route <strong>/creer-un-article</strong> et il est donc toujours possible pour un ROLE_MEMBRE d’y accéder.</p>
+<p>Allons dans <strong>src / Controller / ArticleController.php</strong><br>
+Grâce aux annotations, il est possible de restreindre l’accès d’une route selon les rôles d’un utilisateur :</p>
+<pre><code>@Security("has_role('ROLE_AUTEUR')")  
+</code></pre>
+<p>Ce qui donnera :</p>
+<pre><code>/**  
+ * Formulaire pour ajouter un article 
+ * @Security("has_role('ROLE_AUTEUR')")  
+ * @Route("/creer-un-article", name="article_add")  
+ */
+ public function addarticle(Request $request) {...}
+</code></pre>
+<p>Ainsi uniquement nos utilisateurs avec le <strong>ROLE_AUTEUR</strong> pourrons accéder à cette page.</p>
+<p>Pour utiliser cette fonctionnalité, rajouter le composant <strong>ExpressionLanguage</strong> :<br>
+<a href="https://symfony.com/doc/current/components/expression_language.html">https://symfony.com/doc/current/components/expression_language.html</a></p>
+<pre><code>composer require symfony/expression-language
+</code></pre>
+<hr>
+<p>Nous avons vu l’essentiel du chapitre sécurité de symfony. N’hésitez pas à vous référer à la documentation officiel et suivre les différents liens mis à votre disposition dans ce cour.</p>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+</div>
+</body>
+
+</html>

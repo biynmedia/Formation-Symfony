@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10-LES EVENEMENTS</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="les-events--symfony-4">Les Events | Symfony 4</h1>
+<p>Vous avez déjà surement entendu parlé des événements ! Oui, oui… rappelez vous… en javascript par exemple. Lorsque votre utilisateur clique sur un bouton, on déclenche une action <em>(quelque chose à faire)</em>. Ou encore plus concrètement, lorsque votre utilisateur soumet un formulaire, on intercepte son “submit” pour déclencher une validation, puis une requête AJAX.</p>
+<h2 id="introduction-aux-évènements">Introduction aux évènements</h2>
+<p>Eh bien, en php, les événements gardent ce même principe ; cependant PHP étant un langage serveur, nous ne détecterons pas les clics de souris <em>(click)</em>, ou encore la saisie au clavier d’un utilisateur <em>(keyup / keydown)</em> qui sont des événements front ; mais un tout autre type d’événements.</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/reference/events.html">https://symfony.com/doc/current/reference/events.html</a></p>
+</blockquote>
+<p>Pour donner une explication simple, chaque fois que vous chargez une page de votre application, symfony en interne <em>“dispatch”</em> autrement dit émet des événements à des moments clés de son exécution.</p>
+<blockquote>
+<p>En savoir plus sur le gestionnaire d’évènements et son fonctionnement ?<br>
+<a href="https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony2/le-gestionnaire-d-evenements-de-symfony2#/id/r-2379813">https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony2/le-gestionnaire-d-evenements-de-symfony2#/id/r-2379813</a></p>
+</blockquote>
+<p>Par la suite, de notre côté, nous allons <strong>souscrire</strong> <em>(Subscriber)</em> à ses événements et écouter <em>(Listener)</em> à quels moments ils se produisent !</p>
+<p>D’un point de vue plus technique, nous demanderons au gestionnaire d’événements de symfony de nous prévenir lorsque tel ou tel évènement se produira. Nous pourrons alors executer notre code, sans venir gêner le fonctionnement de symfony !</p>
+<h2 id="les-événements-kernel-de-symfony">Les événements Kernel de Symfony</h2>
+<p>Pour bien comprendre, voyons ensemble les événements <strong>kernel</strong> de symfony. Ce ne sont pas les seuls évènements, il en existe d’autres…</p>
+<blockquote>
+<p>MEMENTO : N’oubliez pas, c’est Symfony qui à plusieurs points de son exécution émet des événements. Ici, c’est le Kernel de symfony qui le fait.</p>
+</blockquote>
+<p><img src="https://image.slidesharecdn.com/symfonycryptopdf-140517003956-phpapp01/95/kernelinfect-creating-a-cryptovirus-for-symfony2-apps-22-638.jpg?cb=1436979027" alt="enter image description here"></p>
+<ul>
+<li>
+<p><strong>kernel.request</strong>  : C’est le tout premier évènement dispatché par symfony, avant même que le contrôleur ne soit déterminé. Il est utile pour ajouter des informations à la requête ou retourner une réponse avant que la requête ne se fasse. <a href="https://symfony.com/doc/current/reference/events.html#kernel-request">https://symfony.com/doc/current/reference/events.html#kernel-request</a></p>
+</li>
+<li>
+<p><strong>kernel.controller</strong>  :  Cet évènement est dispatché juste avant l’appel du contrôleur en charge de la requête. <em>(Le contrôleur n’est donc pas encore exécuté)</em>. Il est utile pour initialiser des données qui seront utilisés par le contrôleur pour son traitement. <a href="https://symfony.com/doc/current/reference/events.html#kernel-controller">https://symfony.com/doc/current/reference/events.html#kernel-controller</a></p>
+</li>
+<li>
+<p><strong>kernel.view</strong>  :  Cet évènement est dispatché après l’execution du controleur, mais uniquement si le controleur ne retourne pas de réponse. Il sera donc utile pour transformer la valeur retourné (du HTML par exemple) en une réponse <em>(Response)</em> attendu par symfony. <a href="https://symfony.com/doc/current/reference/events.html#kernel-view">https://symfony.com/doc/current/reference/events.html#kernel-view</a></p>
+</li>
+<li>
+<p><strong>kernel.response</strong> : Cet évènement est dispatché après que le contrôleur est ou qu’un Listener sur  <code>kernel.view</code> est retournée une réponse <code>Response</code>. Cet évènement est utile pour modifier ou remplacer une réponse avant de l’envoyer. <em>(Par exemple : Modifier les en-tete HTTP, ajouter des cookies, …)</em>  <a href="https://symfony.com/doc/current/reference/events.html#kernel-response">https://symfony.com/doc/current/reference/events.html#kernel-response</a></p>
+</li>
+<li>
+<p><strong>kernel.terminate</strong>  :   Cet évènement est dispatché après qu’une réponse est été exécuté par symfony. Il est pratique pour exécuter certaines tâches qui pourrait ralentir le chargement du site et qui n’ont pas besoin d’être achevés pour envoyer la réponse à l’utilisateur. <em>(Par exemple, l’envoi de mails…)</em> <a href="https://symfony.com/doc/current/reference/events.html#kernel-terminate">https://symfony.com/doc/current/reference/events.html#kernel-terminate</a></p>
+</li>
+</ul>
+<p>Il existe encore d’autres évènements kernel comme :</p>
+<ul>
+<li>
+<p><strong>kernel.exception</strong>  :   Lorsqu’une erreur se produit. <a href="https://symfony.com/doc/current/reference/events.html#kernel-exception">https://symfony.com/doc/current/reference/events.html#kernel-exception</a></p>
+</li>
+<li>
+<p><strong>kernel.finish-request</strong>  :   Après une sous-requête. <a href="https://symfony.com/doc/current/reference/events.html#kernel-finish-request">https://symfony.com/doc/current/reference/events.html#kernel-finish-request</a></p>
+</li>
+</ul>
+<p><strong>Bien-sûr, nous pouvons créer, émettre et écouter nos propres événements !</strong></p>
+<h2 id="afficher-une-modal-dinscription-aux-bouts-de-la-quatrième-page-visité-par-lutilisateur.">Afficher une modal d’inscription aux bouts de la quatrième page visité par l’utilisateur.</h2>
+<p>Afin de mieux approcher les événements, nous prendrons un cas concret. Nous souhaiterions afficher aux internautes, sur notre site technews, une modal d’inscription à notre newsletter ; mais uniquement à partir de sa troisième page consulté sur le site.</p>
+<p><strong>Comment nous-y prendre ?</strong></p>
+<h3 id="mise-en-place-de-la-modal">Mise en Place de la Modal</h3>
+<p>Pour mettre en place la modal, nous allons passé par plusieurs étapes :</p>
+<ol>
+<li>Créer une Entité Newsletter</li>
+<li>Créer un Formulaire NewsletterType</li>
+<li>Mettre en Place un NewsletterController</li>
+<li>Créer la vue Newsletter</li>
+<li>Afficher la Modal dans le Layout</li>
+</ol>
+<h4 id="création-de-lentité-newsletter">Création de l’Entité Newsletter</h4>
+<p>Afin de pouvoir sauvegarder en base de donnée les adresses emails de nos utilisateurs inscrits, nous allons mettre en place une Entité Newsletter.</p>
+<p>Par soucis de simplicité nous auront 2 champs :</p>
+<ul>
+<li>id</li>
+<li>email</li>
+</ul>
+<blockquote>
+<p>Dans un système plus complexe nous pourrions imaginer rajouter, le prénom, nom, plus d’autres paramètres facultatifs… Ainsi que garder un historique des désinscriptions…</p>
+</blockquote>
+<pre><code>/**  
+ * @ORM\Id  
+ * @ORM\GeneratedValue  
+ * @ORM\Column(type="integer")  
+ */
+ private $id;  
+  
+/**  
+ * @ORM\Column(type="string", length=80)  
+ */
+ private $email;
+</code></pre>
+<p>N’oubliez pas ensuite de mettre à jour notre base de données :</p>
+<pre><code>php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
+</code></pre>
+<h4 id="création-du-formulaire-newslettertype">Création du Formulaire NewsletterType</h4>
+<p>Pour que nos utilisateurs puissent s’inscrire nous auront besoin de mettre en place un formulaire d’inscription. Sur la base de notre Entité Newsletter, créez un <code>NewsletterType</code> dans <strong>src/Form</strong>.</p>
+<p>Nous aurons deux champs :</p>
+<ul>
+<li>email <em>(EmailType)</em></li>
+<li>submit <em>(SubmitType)</em></li>
+</ul>
+<h4 id="création-du-newslettercontroller">Création du NewsletterController</h4>
+<p>S’agissant d’un élément bien spécifique, nous allons créer un  NewsletterController dans <strong>src / Controller / TechNews / NewsletterController.php</strong></p>
+<p>Il aura a charge le rendu de l’affichage de la modal dans notre layout.</p>
+<pre><code>class NewsletterController extends Controller
+</code></pre>
+<p>Nous allons mettre en place notre vue qui permet de faire le rendu de la modal.</p>
+<pre><code>public function newsletter() {    
+  # Création du Formulaire
+  $form = $this-&gt;createForm(NewsletterType::class);  
+  
+  # Affichage du Formulaire Newsletter  
+  return $this-&gt;render('newsletter/subscribe.html.twig',[  
+      'form' =&gt; $form-&gt;createView()  
+  ]);        
+}
+</code></pre>
+<blockquote>
+<p>Notre thème utilisant bootstrap, nous utiliserons une modal bootstrap.</p>
+</blockquote>
+<h4 id="création-de-la-vue--newslettersubscribe.html.twig">Création de la vue : newsletter/subscribe.html.twig</h4>
+<p>Par soucis de rapidité, j’ai mis à votre disposition un fichier subscribe.html.twig qui contient déjà le code permettant de faire fonctionner la modal. Vous avez également dans le dossier TechNews un fichier newsletter.css qui doit être rajouté dans l’en-tête.</p>
+<blockquote>
+<p>La newsletter utilisant FontAwesome 4.x.x, nous allons mettre à jour la librairie dans notre Templates/layout.html.twig :</p>
+</blockquote>
+<pre><code>&lt;link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"&gt;
+</code></pre>
+<h3 id="finalisation-de-la-vue">Finalisation de la Vue</h3>
+<p>Si tous est correct, nous pouvons afficher la modal sur notre site en passant par la fonction <code>{{ render(controller()) }}</code></p>
+<pre><code>{{ render(controller('App\\Controller\\TechNews\\NewsletterController::newsletter' )) }}  
+{% block final_javascripts %}  
+   &lt;script type="text/javascript"&gt;  
+      $(function(){  
+	      $("#newsletterModal").modal('show');  
+      });  
+   &lt;/script&gt;  
+{% endblock %}
+</code></pre>
+<p>Je modifie également le fichier base.html.twig comme suit :</p>
+<pre><code>{% block body '' %}  
+{% block javascripts '' %}  
+{% block final_javascripts '' %}
+</code></pre>
+<p>Pour rajouter le block : <code>final_javascripts</code></p>
+<blockquote>
+<p>NOTA BENE, la balise script, permet de lancer l’affichage de la modal au charge de la page. Grâce au block <strong>final_javascripts</strong> il viendra se placer juste après les autres librairies JS.</p>
+</blockquote>
+<h3 id="gestion-de-lévènement">Gestion de l’évènement</h3>
+<p>Nous pouvons maintenant passer à la gestion de notre évènement.<br>
+Pour mettre en place l’affichage de la modal lors de la 3ème page visitée par notre utilisateur, nous allons <strong>souscrire</strong> aux évènements <code>Request</code> et <code>Response</code> du Kernel de Symfony, comme vu plus haut. Lorsqu’il seront émit par le kernel de symfony, nous pourront alors exécuter notre code.</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/event_dispatcher.html#creating-an-event-subscriber">https://symfony.com/doc/current/event_dispatcher.html#creating-an-event-subscriber</a></p>
+</blockquote>
+<p>Pour créer notre subscriber, nous allons créer une nouvelle classe : <code>NewsletterSubscriber</code> dans <strong>src/EventSubscriber/NewsletterSubscriber.php</strong></p>
+<p>Afin de connecter notre classe avec le <code>EventDispatcher</code> de symfony, nous allons implémenter l’interface <code>EventSubscriberInterface</code> ce qui donnera :</p>
+<pre><code>class NewsletterSubscriber implements EventSubscriberInterface
+</code></pre>
+<p>L’interface met à notre disposition une fonction : <code>getSubscribedEvents()</code> qui nous permet de préciser <strong>quels sont les événements que nous souhaitons écouter.</strong></p>
+<pre><code>public static function getSubscribedEvents()  
+{  
+     return [  
+		  KernelEvents::REQUEST =&gt; 'onKernelRequest',  
+	      KernelEvents::RESPONSE =&gt; 'onKernelResponse'  
+     ];  
+}
+</code></pre>
+<p>Quand ces événements seront émit par le <strong>Kernel de Symfony</strong>, notre fonction <code>onKernelRequest</code> et <code>onKernelResponse</code> sera exécuté !</p>
+<p>Voyons pour la fonction <code>onKernelRequest</code> :</p>
+<blockquote>
+<p>Par soucis de simplification je n’entrerai pas dans le détails de chaque évènement, mais vous pouvez jetez un œil ici pour en savoir plus : <a href="https://symfony.com/doc/current/components/http_kernel.html#creating-an-event-listener">https://symfony.com/doc/current/components/http_kernel.html#creating-an-event-listener</a></p>
+</blockquote>
+<pre><code>public function onKernelRequest(GetResponseEvent $event)  
+{  
+	# On s'assure que la requête viens de l'utilisateur et non de Symfony et qu'il ne s'agit pas d'une requète AJAX. 
+    if (!$event-&gt;isMasterRequest() || $event-&gt;getRequest()-&gt;isXmlHttpRequest()) {  
+		 return;  
+    }      
+ 
+     # Aperçu des données en session  
+     # dump($this-&gt;session-&gt;all());  
+     
+     # Suppression des données en session 
+     # $this-&gt;session-&gt;remove('inviteUser');
+     # $this-&gt;session-&gt;remove('nbUserView');  
+     
+     # Au bout de la troisième visites de l'utilisateur on lui propose la newsletter... 
+     $this-&gt;session-&gt;set('nbUserView', $this-&gt;session-&gt;get('nbUserView', 0) + 1);  
+     if($this-&gt;session-&gt;get('nbUserView') === 3) {
+	     $this-&gt;session-&gt;set('inviteUser', true);  
+     }       
+}
+</code></pre>
+<blockquote>
+<p>POST-SCRIPTUM : Voir ici la différence entre Master et Sub Request : <a href="https://stackoverflow.com/questions/12456949/what-is-the-difference-between-master-sub-request-in-symfony2">https://stackoverflow.com/questions/12456949/what-is-the-difference-between-master-sub-request-in-symfony2</a></p>
+</blockquote>
+<p>Et pour la fonction <code>onKernelResponse</code> :</p>
+<pre><code>public function onKernelResponse(FilterResponseEvent $event)  
+{  
+    if (!$event-&gt;isMasterRequest() || $event-&gt;getRequest()-&gt;isXmlHttpRequest()) {  
+		return;  
+    }  
+    
+    if($this-&gt;session-&gt;get('nbUserView') === 3) {  
+	    $this-&gt;session-&gt;set('inviteUser', false);  
+    }
+}
+</code></pre>
+<p>Il ne nous manque plus qu’à rajouter une condition pour que notre modal ne s’affiche plus à chaque rafraîchissement de page.</p>
+<p>Nous aurions pu mettre dans <code>layout.html.twig</code> une condition du style :</p>
+<pre><code>{% if app.session.get('inviteUser') %}  
+	...
+{% endif %}
+</code></pre>
+<p>Cependant, <strong>ce n’est pas le rôle de la vue</strong> de s’occuper de se genre de logique… Nous placerons plutôt notre condition dans une fonction twig !</p>
+<p>Dans notre fichier <strong>src/Service/Twig/AppExtention.php</strong> nous allons surcharger la méthode <code>getFunctions()</code> afin de créer notre propre fonction twig <code>isUserInvited</code>, un peu comme nous l’avions fait pour les filtres…</p>
+<pre><code>public function getFunctions()  
+{
+     return [  
+		 new \Twig_Function('isUserInvited', function() {
+		     return $this-&gt;session-&gt;get('inviteUser');  
+	      })  
+     ];  
+}
+</code></pre>
+<p>Ensuite dans notre code, nous pourrons ajouter la condition suivante :</p>
+<pre><code>{% if isUserInvited() %}
+    {% block final_javascripts %}  
+        &lt;script type="text/javascript"&gt;  
+		    $(function(){  
+                $("#newsletterModal").modal('show');  
+		    });  
+	    &lt;/script&gt;  
+    {% endblock %}  
+{% endif %}
+</code></pre>
+<p>Et voilà ! Le tour est joué 😊</p>
+<h2 id="dernière-connexion-dun-utilisateur">Dernière connexion d’un utilisateur</h2>
+<p>Sur le principe de ce que nous venons de voir avec les événements, vous devez maintenant trouver comment mettre à jour la date de dernière connexion d’un auteur.</p>
+<p>Autrement dit, a chaque fois qu’un Auteur se connecte, nous devons mettre à jour sa date de dernière connexion.</p>
+<blockquote>
+<p>Un petit indice ? Si vous insistez…<br>
+<a href="https://symfony.com/doc/current/components/security/authentication.html#security-events">https://symfony.com/doc/current/components/security/authentication.html#security-events</a></p>
+</blockquote>
+<p>Il y aurait encore beaucoup à dire sur les événements, ce chapitre n’est qu’une introduction aux événements, pour approfondir le sujet n’hésitez pas à étudier la doc officiel de symfony.</p>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+</div>
+</body>
+
+</html>

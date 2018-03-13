@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08-LES FORMULAIRES</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="les-formulaires--symfony-4">Les Formulaires | Symfony 4</h1>
+<p>Voyons ensemble comment créer un formulaire avec symfony !</p>
+<blockquote>
+<p>Doc de référence :<br>
+<a href="https://symfony.com/doc/current/forms.html">https://symfony.com/doc/current/forms.html</a></p>
+</blockquote>
+<p>Nous allons mettre en place un formulaire permettant de créer un article !</p>
+<h2 id="création-du-formulaire">Création du Formulaire</h2>
+<blockquote>
+<p>Créons une nouvelle route dans notre <strong>ArticleController</strong></p>
+</blockquote>
+<pre><code>/**
+ * Formulaire pour ajouter un article
+ * @Route("/creer-un-article", name="article_add")
+ */
+public function addarticle() {...}
+</code></pre>
+<p>Dans notre console, nous allons charger le composant <strong>form</strong> de symfony :</p>
+<pre><code>composer require form
+</code></pre>
+<p>Créons un nouvel objet <strong>Article</strong></p>
+<pre><code># Création d'un nouvel article
+$article = new Article();
+</code></pre>
+<p>Dans notre base de donnée, un Article est rédiger par un et un seul auteur. Nous pourrions récupérer notre auteur en session et l’associer directement avec son article. <strong>Pour le moment nous allons le faire manuellement.</strong></p>
+<p>Nous allons récupérer un des auteurs en BDD et l’associer avec l’article :</p>
+<pre><code>$auteur = $this-&gt;getDoctrine()-&gt;getRepository(Auteur::class)-&gt;find(1);
+$article-&gt;setAuteur($auteur);
+</code></pre>
+<p>La puissance de symfony, nous permet de créer notre formulaire en nous appuyant sur nos entités !</p>
+<pre><code> $form = $this-&gt;createFormBuilder($article)
+</code></pre>
+<p>J’ai passé ici directement mon objet <code>$article</code> au <strong>createFormBuilder</strong> de symfony. De cette façon symfony sais qu’il s’agira d’un formulaire pour <strong>Article</strong>.</p>
+<p>Nous allons maintenant créer nos différents champs.<br>
+Par exemple :</p>
+<pre><code># Champ TITREARTICLE
+-&gt;add('titre', TextType::class, [
+    'required'      =&gt; true,
+    'label'         =&gt; Titre de l'Article,
+    'attr'          =&gt; [
+        'class'         =&gt;  'form-control',
+        'placeholder'   =&gt;  'Titre de l\'Article...'
+    ]
+])
+</code></pre>
+<blockquote>
+<p>Regardez les différents type de champs qui existe :<br>
+<a href="https://symfony.com/doc/current/reference/forms/types.html">https://symfony.com/doc/current/reference/forms/types.html</a></p>
+</blockquote>
+<p><strong>Nous allons avoir besoin des champs suivants :</strong></p>
+<ol>
+<li>titre</li>
+<li>categorie</li>
+<li>contenu</li>
+<li>featuredimage</li>
+<li>special</li>
+<li>spotlight</li>
+<li>submit</li>
+</ol>
+<blockquote>
+<p>NB : Le nom des champs correspondent avec les propriétés de votre classe Article.</p>
+</blockquote>
+<p>Une fois que tous les champs ont été renseignés, nous allons transmettre le formulaire à la vue :</p>
+<p>A la suite du dernier champ :</p>
+<pre><code>-&gt;getForm();
+</code></pre>
+<p>Puis :</p>
+<pre><code># Affichage du Formulaire dans la Vue
+return $this-&gt;render('article/ajouterarticle.html.twig', [
+    'form' =&gt; $form-&gt;createView()
+]);
+</code></pre>
+<blockquote>
+<p>NB : La fonction <strong>createView</strong> permet de créer le formulaire au moment de le passer à la vue.</p>
+</blockquote>
+<h2 id="affichage-du-formulaire">Affichage du Formulaire</h2>
+<p>Créons la vue <strong>ajouterarticle.html.twig</strong><br>
+Nous avons plusieurs façons de générer l’affichage des formulaires.</p>
+<p><strong>Une fonction suffit :</strong></p>
+<pre><code>{{ form(form) }}
+</code></pre>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/forms.html#rendering-the-form">https://symfony.com/doc/current/forms.html#rendering-the-form</a></p>
+</blockquote>
+<p>Mais nous pouvons aller plus loin et personnaliser le rendu de notre thème. Symfony met à notre disposition plusieurs thèmes :</p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/form/form_customization.html#what-are-form-themes">https://symfony.com/doc/current/form/form_customization.html#what-are-form-themes</a></p>
+</blockquote>
+<p>Notre site utilisant bootstrap 3, nous utiliserons le thème : <code>bootstrap\3\layout.html.twig</code></p>
+<blockquote>
+<p>Ce thème va AUTOMATIQUEMENT formater l’affichage de notre formulaire en respectant la structure bootstrap 3.</p>
+</blockquote>
+<p><em>Nous utiliserons donc :</em></p>
+<pre><code>{% form_theme form 'bootstrap_3_layout.html.twig' %}  
+{{ form(form) }}
+</code></pre>
+<p><em>Exemple :</em></p>
+<pre><code> {# Titre de l'Article #}
+ &lt;div class="row"&gt;  
+     &lt;div class="col-xs-6 col-xs-push-3"&gt;  
+	     &lt;h2 class="text-center"&gt;Créer un Article&lt;/h2&gt;  
+		 {% form_theme form 'bootstrap_3_layout.html.twig' %}  
+         {{ form(form) }}  
+    &lt;/div&gt;  
+&lt;/div&gt;
+</code></pre>
+<p><code>form_theme</code> permet d’appliquer à notre formulaire un thème spécifique.<br>
+<strong>NOTA BENE : Il est tout à fait possible de créer votre propre thème !</strong></p>
+<blockquote>
+<p>Doc de Référence : <a href="https://symfony.com/doc/current/form/form_customization.html#multiple-templates">https://symfony.com/doc/current/form/form_customization.html#multiple-templates</a></p>
+</blockquote>
+<p>Afin de bénéficiez de certains fonctionnalités de sécurité de symfony, notamment <a href="https://symfony.com/doc/current/security/csrf.html">la protection CSRF</a>, nous allons importer le composant :</p>
+<pre><code>composer require symfony/security-csrf
+</code></pre>
+<p>Symfony se chargera ensuite automatique d’inclure à la fin de votre formulaire ou via <code>{{ form_end(form) }}</code> un token csrf.</p>
+<h2 id="traitement-du-formulaire">Traitement du Formulaire</h2>
+<p>Maintenant que notre formulaire s’affiche, voyons comment :</p>
+<ol>
+<li>Valider le Formulaire</li>
+<li>Récupérer les informations</li>
+<li>Enregistrer l’Article en BDD</li>
+<li>Rediriger l’utilisateur sur le nouvel article</li>
+</ol>
+<h3 id="valider-le-formulaire">Valider le Formulaire</h3>
+<p>Nous allons injecter l’objet Request en paramètre de notre fonction :</p>
+<pre><code>public function addarticle(Request $request)
+</code></pre>
+<p>Cette objet contient nos données <strong>$_POST</strong><br>
+Toujours dans notre fonction addarticle, à la suite de notre formulaire, nous allons récupérer les données $_POST :</p>
+<pre><code># Traitement des données POST
+$form-&gt;handleRequest($request);
+</code></pre>
+<p>Nous allons ensuite vérifier si tous les champs ont bien été remplis, si notre formulaire est valide :</p>
+<pre><code># Vérification des données du Formulaire
+if ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) :
+</code></pre>
+<p>A ce moment là, nous pouvons récupérer nos données :</p>
+<pre><code># Récupération des données
+$article = $form-&gt;getData();
+</code></pre>
+<p>Avant de faire l’insertion en BDD, il nous faut gérer l’upload de l’image : <strong>featuredimage</strong> :</p>
+<h4 id="traitement-de-lupload-dun-fichier-avec-symfony">Traitement de l’Upload d’un fichier avec Symfony</h4>
+<blockquote>
+<p>Doc de Référence :<br>
+<a href="https://symfony.com/doc/current/controller/upload_file.html">https://symfony.com/doc/current/controller/upload_file.html</a></p>
+</blockquote>
+<h3 id="enregistrer-larticle-en-bdd-">Enregistrer l’article en BDD :</h3>
+<p>L’enregistrement de notre article se fait de façon automatique par symfony :</p>
+<pre><code># Insertion en BDD
+$em = $this-&gt;getDoctrine()-&gt;getManager();
+$em-&gt;persist($article);
+$em-&gt;flush();
+</code></pre>
+<p>Eh oui ! Symfony à <strong>automatiquement remplis notre objet Article</strong> avec les données saisies par notre utilisateur !<br>
+Nous n’avons plus qu’a le persister</p>
+<h3 id="redirection-">Redirection :</h3>
+<p>Si tout c’est bien passé, nous allons rediriger l’utilisateur sur l’article qu’il vient de créer. Mais pour se faire nous auront besoin de générer un slug depuis notre contrôleur.</p>
+<h4 id="création-dun-trait-helper">Création d’un Trait Helper</h4>
+<p>On va définir un Trait de façon relativement similaire à une classe, à la différence que nous allons utiliser le mot clef trait suivi du nom de notre Trait.</p>
+<blockquote>
+<p>Doc de Référence :<br>
+<a href="http://www.pierre-giraud.com/php-mysql/cours-complet/php-poo-traits.php">http://www.pierre-giraud.com/php-mysql/cours-complet/php-poo-traits.php</a></p>
+</blockquote>
+<p>Nous allons donc mettre en place un <strong>Trait Helper</strong> et une fonction <strong>slugify</strong> qui se chargera de générer un slug à partir du titre de notre article !</p>
+<blockquote>
+<p>Créer un fichier <strong>Helper.php</strong> dans <strong>src/Controller</strong></p>
+</blockquote>
+<pre><code>/**
+ * Permet de générer un Slug à partir d'un String
+ * @param $text
+ * @return String Slug
+ * @see https://stackoverflow.com/questions/2955251/php-function-to-make-slug-url-string
+ */
+public function slugify($text)
+</code></pre>
+<p>Il ne nous reste plus que l’appel de notre Trait dans le ArticleController :</p>
+<pre><code>class ArticleController extends Controller
+{
+    use Helper;
+</code></pre>
+<p>Notre fonction slugify est alors disponible via :</p>
+<pre><code>$this-&gt;slugify()
+</code></pre>
+<p>Nous pouvons ensuite faire notre redirection de la façon suivante :</p>
+<pre><code># Redirection sur l'Article qui vient d'être créé.
+return $this-&gt;redirectToRoute('index_article', [
+    'libellecategorie' =&gt; $this-&gt;slugify($article-&gt;getCategorie()-&gt;getLibelle()),
+    'slugarticle'      =&gt; $this-&gt;slugify($article-&gt;getTitre()),
+    'id'               =&gt; $article-&gt;getId()
+]);
+</code></pre>
+<h2 id="aller-plus-loin">Aller plus loin</h2>
+<p>Dans notre exemple précédent, la création de notre formulaire c’est faite directement dans notre contrôleur. Cependant, il est une bonne pratique de passer la logique de création du formulaire dans une classe à part et ainsi alléger le travail de notre constructeur ; cela aura aussi pour avantage de factoriser notre code.</p>
+<h3 id="création-dun-custom-formtype">Création d’un Custom FormType</h3>
+<p>Nous allons créer une nouvelle classe <code>ArticleType</code> dans <strong>src/Form/ArticleType.php</strong><br>
+Cette classe héritera de <code>Symfony\Component\Form\AbstractType</code></p>
+<pre><code>class ArticleType extends AbstractType
+</code></pre>
+<p>Nous allons ensuite surcharger la méthode <strong>BuildForm</strong> qui nous permettra de construire notre propre formulaire *	ArticleType*</p>
+<pre><code>public function buildForm(FormBuilderInterface $builder, array $options)
+</code></pre>
+<p>Nous allons déplacer dans cette fonction l’ensemble de nos champs depuis le contrôleur de cette façon :</p>
+<pre><code>$builder  
+  -&gt;add('titre', TextType::class, [  
+      'required' =&gt; true,  
+      'label' =&gt; false,  
+      'attr' =&gt; [  
+	      'class' =&gt; 'form-control',  
+	      'placeholder' =&gt; 'Titre de l'Article...'  
+      ]  
+   ]) 
+   -&gt;add('categorie', EntityType::class)
+   -&gt;add('contenu', TextareaType::class)
+   ...
+   -&gt;add('submit', SubmitType::class)
+;
+</code></pre>
+<blockquote>
+<p>Vous remarquerez que l’ensemble de nos champs sont ajouté depuis <code>$builder</code></p>
+</blockquote>
+<p>Ensuite, nous redéfinirons une dernière fonction : <code>configureOptions</code> afin d’indiquer à symfony quelle sera l’entité associée avec ce formulaire:</p>
+<pre><code>public function configureOptions(OptionsResolver $resolver)  
+{  
+    $resolver-&gt;setDefaults(array(  
+      'data_class' =&gt; Article::class,  
+    ));  
+}
+</code></pre>
+<p>Ensuite, depuis notre contrôleur :</p>
+<p><strong>Avant :</strong></p>
+<pre><code>$form = $this-&gt;createFormBuilder($article)
+</code></pre>
+<p><strong>Maintenant :</strong></p>
+<pre><code>$form = $this-&gt;createForm(ArticleType::class, $article);
+</code></pre>
+<blockquote>
+<p>Notez que la fonction est différente <code>createForm</code> au lieu de <code>createFormBuilder</code> et que nous n’utiliserons pas <code>getForm()</code></p>
+</blockquote>
+<p>Le reste de notre code ne changera pas.<br>
+En procédant de la sorte, nous avons allégé notre constructeur et ajouté la possibilité de réutiliser plus tard notre <strong>ArticleType</strong> ailleurs dans notre projet.</p>
+<hr>
+<p><strong>Créez ensuite un formulaire permettant l’inscription d’un Auteur.</strong></p>
+<blockquote>
+<p>Ce chapitre n’aborde pas la validation des données du formulaire.<br>
+Vous pouvez regarder comment valider vos champs en suivant la documentation suivantes : <a href="https://symfony.com/doc/current/forms.html#form-validation">https://symfony.com/doc/current/forms.html#form-validation</a></p>
+</blockquote>
+<p>Written with ❤️ by <a href="https://github.com/hugoliegeard">Hugo LIEGEARD</a>.</p>
+</div>
+</body>
+
+</html>
