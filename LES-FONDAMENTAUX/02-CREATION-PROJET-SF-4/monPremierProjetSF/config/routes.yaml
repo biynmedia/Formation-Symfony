@@ -7,7 +7,7 @@ index:
 # Utilisation du RedirectController
 # https://symfony.com/doc/current/routing/redirect_in_config.html#redirecting-using-a-route
 accueil:
-    path: /accueil
+    path: /{_locale}/accueil
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
     defaults:
         route: index

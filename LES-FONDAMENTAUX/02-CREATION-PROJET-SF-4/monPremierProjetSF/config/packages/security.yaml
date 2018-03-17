@@ -13,6 +13,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            #access_denied_handler: App\Security\AccessDeniedHandler
             anonymous: true
             form_login:
               login_path: security_connexion

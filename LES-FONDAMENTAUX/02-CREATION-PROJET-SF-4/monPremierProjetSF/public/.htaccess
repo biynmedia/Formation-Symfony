@@ -1,0 +1,4 @@
+SetEnv APP_ENV dev
+SetEnv APP_SECRET d6e60155453e447f4239b03383e2e86e
+SetEnv MAILER_URL null://localhost
+SetEnv DATABASE_URL mysql://root:@127.0.0.1:3306/technewsSF

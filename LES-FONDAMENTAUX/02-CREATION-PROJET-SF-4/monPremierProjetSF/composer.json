@@ -18,6 +18,7 @@
         "symfony/monolog-bundle": "^3.2",
         "symfony/orm-pack": "^1.0",
         "symfony/process": "^3.4",
+        "symfony/requirements-checker": "^1.0",
         "symfony/security-bundle": "^3.4",
         "symfony/serializer-pack": "*",
         "symfony/swiftmailer-bundle": "^3.1",
@@ -61,7 +62,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "requirements-checker": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"
